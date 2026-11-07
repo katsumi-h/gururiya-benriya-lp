@@ -1,0 +1,1794 @@
+<?php
+/*
+ * Template Name: Full Page LP
+ * Description: ヘッダー・フッターなしの全幅LPテンプレート（ぐるり屋本舗 トップページ用）
+ */
+/* 2026-11-07 大幅改修。器は相模原のハウスクリーニングのページ（page-housecleaning-sagamihara.php）の見た目・部品・CSS。
+   文は「2026-11-07_便利屋トップ_新原稿.md」の第1部（本人確定）。
+   お問い合わせは共通の /contact/ へ（?service= は付けない。共通の問い合わせページは触らない）。
+   計測は改修前のトップと同じ（wp_head と wp_footer だけ。相模原の dataLayer の行は持ち込まない）。 */
+$gr_contact_url = home_url('/contact/');
+/* 最初の画面の背景。仮の画像。あとで差し替え（差し替えるときは、この1行のファイル名と、下の img の width・height を変える） */
+$gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
+?>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>神奈川の便利屋｜ぐるり屋本舗 – 片付け・草刈り・家具の移動など</title>
+  <meta name="description" content="神奈川の便利屋ぐるり屋本舗。片付け・草刈り・家具の移動など、小さなご依頼からお受けします。金額は現地で確かめてから決めます。見積もり無料。TEL 090-2162-6510">
+  <?php wp_head(); ?>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body.hc-lp {
+      margin: 0;
+      color: #203139;
+      background: #fff;
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    .hc-lp a { color: inherit; text-decoration: none; }
+    .hc-lp img { display: block; max-width: 100%; height: auto; }
+    .hc-lp button, .hc-lp a { -webkit-tap-highlight-color: transparent; }
+    .hc-lp :focus-visible { outline: 3px solid #ef7d3b; outline-offset: 3px; }
+
+    :root {
+      --hc-ink: #203139;
+      --hc-muted: #627079;
+      --hc-blue: #166b83;
+      --hc-blue-dark: #0d4f63;
+      --hc-aqua: #e8f7f8;
+      --hc-cream: #fff9ef;
+      --hc-orange: #e96c2b;
+      --hc-orange-dark: #bf4f18;
+      --hc-line: #dce7e9;
+      --hc-shadow: 0 18px 50px rgba(21, 78, 92, .12);
+    }
+
+    .hc-container { width: min(100% - 32px, 1080px); margin-inline: auto; }
+    .hc-narrow { width: min(100% - 32px, 820px); margin-inline: auto; }
+    .hc-section { padding: 76px 0; }
+    .hc-section--tint { background: #f5fbfb; }
+    .hc-section--cream { background: var(--hc-cream); }
+    .hc-eyebrow {
+      margin: 0 0 8px;
+      color: var(--hc-blue);
+      font-size: .8rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .hc-title {
+      margin: 0 0 18px;
+      color: var(--hc-ink);
+      font-size: clamp(1.65rem, 4vw, 2.35rem);
+      line-height: 1.4;
+      text-align: center;
+    }
+    .hc-title strong { color: var(--hc-orange-dark); }
+    .hc-lead {
+      max-width: 720px;
+      margin: 0 auto 36px;
+      color: var(--hc-muted);
+      text-align: center;
+    }
+    .hc-note {
+      margin: 18px 0 0;
+      color: var(--hc-muted);
+      font-size: .82rem;
+      line-height: 1.7;
+    }
+    .hc-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 5px 12px;
+      border: 1px solid rgba(22, 107, 131, .25);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--hc-blue-dark);
+      font-size: .78rem;
+      font-weight: 600;
+    }
+
+    .hc-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(22, 107, 131, .12);
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(12px);
+    }
+    .hc-header__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 66px;
+      gap: 16px;
+    }
+    .hc-brand { display: flex; flex-direction: column; line-height: 1.2; }
+    .hc-brand__sub { color: var(--hc-blue); font-size: .68rem; font-weight: 600; }
+    .hc-brand__main { color: var(--hc-ink); font-size: 1.05rem; font-weight: 600; }
+    .hc-header__tel {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--hc-orange);
+      color: #fff;
+      font-size: .92rem;
+      font-weight: 600;
+      box-shadow: 0 8px 22px rgba(233, 108, 43, .24);
+    }
+
+    .hc-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 72px 0 60px;
+      background:
+        radial-gradient(circle at 86% 16%, rgba(87, 201, 206, .22) 0 12%, transparent 13%),
+        radial-gradient(circle at 8% 92%, rgba(233, 108, 43, .12) 0 15%, transparent 16%),
+        linear-gradient(145deg, #f5ffff 0%, #fffaf2 100%);
+    }
+    .hc-hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -8% -130px auto;
+      width: 360px;
+      height: 360px;
+      border: 54px solid rgba(22, 107, 131, .06);
+      border-radius: 50%;
+    }
+    .hc-hero__grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(300px, .8fr);
+      align-items: center;
+      gap: 54px;
+    }
+    .hc-hero__area {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      color: var(--hc-blue-dark);
+      font-size: .9rem;
+      font-weight: 600;
+    }
+    .hc-hero__area::before {
+      content: "";
+      width: 28px;
+      height: 2px;
+      background: var(--hc-orange);
+    }
+    .hc-hero h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 5.5vw, 4rem);
+      line-height: 1.18;
+      letter-spacing: -.035em;
+    }
+    .hc-hero h1 em {
+      display: block;
+      color: var(--hc-blue);
+      font-size: .56em;
+      font-style: normal;
+      letter-spacing: .02em;
+      margin-bottom: 10px;
+    }
+    .hc-hero h1 > span { display: block; }
+    .hc-hero__city { font-size: .65em; }
+    .hc-hero__service { font-size: 70px; }
+    .hc-hero__actions { width: 100%; max-width: 620px; margin: 0 auto; }
+    .hc-hero__copy {
+      max-width: 650px;
+      margin: 24px 0 26px;
+      color: #40545e;
+      font-size: 1.05rem;
+    }
+    .hc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .hc-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hc-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 13px 24px;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      font-weight: 600;
+      line-height: 1.35;
+      text-align: center;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .hc-button:hover { transform: translateY(-2px); }
+    .hc-button--primary {
+      background: var(--hc-orange);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(233, 108, 43, .25);
+    }
+    .hc-button--secondary {
+      border-color: var(--hc-blue);
+      background: #fff;
+      color: var(--hc-blue-dark);
+    }
+    .hc-button--primary,
+    .hc-button--primary:visited,
+    .hc-button--secondary,
+    .hc-button--secondary:visited { color: #fff !important; }
+    .hc-button small { display: block; font-size: .7rem; font-weight: 600; opacity: .92; }
+    .hc-hero__panel {
+      position: relative;
+      padding: 30px;
+      border: 1px solid rgba(22, 107, 131, .16);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, .88);
+      box-shadow: var(--hc-shadow);
+    }
+    .hc-hero__panel::before {
+      content: "CLEAN";
+      display: block;
+      margin-bottom: 18px;
+      color: rgba(22, 107, 131, .18);
+      font-size: 2.7rem;
+      font-weight: 900;
+      letter-spacing: .15em;
+      line-height: 1;
+    }
+    .hc-hero__panel h2 { margin: 0 0 12px; font-size: 1.3rem; line-height: 1.45; }
+    .hc-checks { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .hc-checks li { position: relative; padding-left: 30px; color: #43555f; }
+    .hc-checks li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      top: 2px;
+      display: grid;
+      place-items: center;
+      width: 21px;
+      height: 21px;
+      border-radius: 50%;
+      background: var(--hc-aqua);
+      color: var(--hc-blue);
+      font-size: .76rem;
+      font-weight: 900;
+    }
+    .hc-proof {
+      border-top: 1px solid var(--hc-line);
+      border-bottom: 1px solid var(--hc-line);
+      background: #fff;
+    }
+    .hc-proof__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .hc-proof__item {
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .hc-proof__item + .hc-proof__item { border-left: 1px solid var(--hc-line); }
+    .hc-proof__item strong { display: block; color: var(--hc-blue-dark); font-size: 1.02rem; }
+    .hc-proof__item span { color: var(--hc-muted); font-size: .75rem; }
+
+    .hc-card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .hc-card {
+      padding: 26px;
+      border: 1px solid var(--hc-line);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 8px 30px rgba(21, 78, 92, .06);
+    }
+    .hc-card__icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      margin-bottom: 18px;
+      border-radius: 14px;
+      background: var(--hc-aqua);
+      color: var(--hc-blue);
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+    .hc-card h3 { margin: 0 0 9px; font-size: 1.08rem; line-height: 1.5; }
+    .hc-card p { margin: 0; color: var(--hc-muted); font-size: .91rem; }
+    .hc-concerns-layout {
+      display: grid;
+      grid-template-columns: minmax(220px, .7fr) minmax(0, 1.3fr);
+      align-items: start;
+      gap: 36px;
+    }
+    .hc-concerns-intro {
+      padding: 34px 30px;
+      border-radius: 12px;
+      background: var(--hc-blue);
+      color: #fff;
+      box-shadow: var(--hc-shadow);
+    }
+    .hc-concerns-intro strong { display: block; margin-bottom: 14px; font-size: 1.35rem; line-height: 1.55; }
+    .hc-concerns-intro p { margin: 0; color: rgba(255,255,255,.88); }
+    .hc-concern-list { margin: 0; padding: 0; border-top: 1px solid var(--hc-line); list-style: none; }
+    .hc-concern-list li { position: relative; padding: 18px 0 18px 48px; border-bottom: 1px solid var(--hc-line); }
+    .hc-concern-list li::before {
+      content: "✓";
+      position: absolute;
+      top: 22px;
+      left: 4px;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #fff3f3;
+      color: var(--hc-orange);
+      font-weight: 900;
+    }
+    .hc-concern-list h3 { margin: 0 0 5px; font-size: 1.02rem; line-height: 1.55; }
+    .hc-concern-list p { margin: 0; color: var(--hc-muted); font-size: .88rem; }
+
+    .hc-process { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .hc-process::before {
+      content: "";
+      position: absolute;
+      top: 31px;
+      right: 16%;
+      left: 16%;
+      height: 4px;
+      background: rgba(2, 136, 209, .22);
+    }
+    .hc-process article { position: relative; z-index: 1; text-align: center; }
+    .hc-process__no {
+      display: grid;
+      place-items: center;
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 20px;
+      border: 6px solid #f7f8fa;
+      border-radius: 50%;
+      background: var(--hc-orange);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 900;
+    }
+    .hc-process h3 { margin: 0 0 8px; font-size: 1.08rem; line-height: 1.5; }
+    .hc-process p { margin: 0; color: var(--hc-muted); font-size: .88rem; }
+
+    .hc-benefit-panel {
+      overflow: hidden;
+      padding: 40px 34px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--hc-blue), var(--hc-blue-dark));
+      color: #fff;
+      box-shadow: var(--hc-shadow);
+    }
+    .hc-benefit-panel > p { max-width: 650px; margin: 0 auto 28px; color: rgba(255,255,255,.9); text-align: center; }
+    .hc-benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .hc-benefit-grid > div { padding: 0 22px; text-align: center; }
+    .hc-benefit-grid > div + div { border-left: 1px solid rgba(255,255,255,.32); }
+    .hc-benefit-grid strong { display: block; margin-bottom: 8px; color: #fff; font-size: 1.08rem; line-height: 1.5; }
+    .hc-benefit-grid span { display: block; color: rgba(255,255,255,.82); font-size: .86rem; line-height: 1.7; }
+
+    .hc-recommend-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 38px;
+      margin: 0;
+      padding: 14px 32px;
+      border-top: 4px solid var(--hc-orange);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: var(--hc-shadow);
+      list-style: none;
+    }
+    .hc-recommend-list li { position: relative; padding: 20px 0 20px 40px; border-bottom: 1px solid var(--hc-line); font-weight: 700; }
+    .hc-recommend-list li:nth-last-child(-n + 2) { border-bottom: 0; }
+    .hc-recommend-list li::before {
+      content: "✓";
+      position: absolute;
+      top: 20px;
+      left: 0;
+      color: var(--hc-orange);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+    .hc-step-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .hc-step {
+      position: relative;
+      padding: 28px;
+      border-radius: 20px;
+      background: #fff;
+      box-shadow: var(--hc-shadow);
+    }
+    .hc-step__no { color: var(--hc-orange); font-size: .78rem; font-weight: 900; letter-spacing: .08em; }
+    .hc-step h3 { margin: 6px 0 8px; font-size: 1.08rem; }
+    .hc-step p { margin: 0; color: var(--hc-muted); font-size: .9rem; }
+
+    .hc-profile {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 38px;
+      align-items: center;
+      padding: 36px;
+      border-radius: 24px;
+      background: var(--hc-blue-dark);
+      color: #fff;
+      box-shadow: var(--hc-shadow);
+    }
+    .hc-profile__mark {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      font-size: 4rem;
+      font-weight: 900;
+    }
+    .hc-profile__role { margin: 0; color: #bfeaf0; font-size: .8rem; font-weight: 800; }
+    .hc-profile h2 { margin: 4px 0 18px; font-size: 1.75rem; }
+    .hc-profile p { margin: 0 0 12px; color: rgba(255,255,255,.88); }
+    .hc-profile p:last-child { margin-bottom: 0; }
+    .hc-message {
+      padding: 32px;
+      border-left: 5px solid var(--hc-orange);
+      border-radius: 4px 18px 18px 4px;
+      background: #fff;
+      box-shadow: 0 10px 35px rgba(21, 78, 92, .08);
+    }
+    .hc-message p { margin: 0 0 14px; }
+    .hc-message p:last-child { margin-bottom: 0; }
+
+    .hc-voices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .hc-voice {
+      padding: 30px;
+      border: 1px solid #f0dbc8;
+      border-radius: 20px;
+      background: #fff;
+    }
+    .hc-stars { color: #e89021; font-size: 1.05rem; letter-spacing: .08em; }
+    .hc-voice blockquote { margin: 14px 0 18px; color: #344851; font-size: 1rem; }
+    .hc-voice footer { color: var(--hc-muted); font-size: .82rem; }
+
+    .hc-service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .hc-service {
+      display: flex;
+      flex-direction: column;
+      min-height: 250px;
+      overflow: hidden;
+      border: 1px solid var(--hc-line);
+      border-radius: 20px;
+      background: #fff;
+    }
+    .hc-service__top { padding: 22px 22px 14px; }
+    .hc-service__label { color: var(--hc-blue); font-size: .75rem; font-weight: 900; letter-spacing: .08em; }
+    .hc-service h3 { margin: 5px 0 10px; font-size: 1.15rem; }
+    .hc-service p { margin: 0; color: var(--hc-muted); font-size: .86rem; }
+    .hc-service__price {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: auto;
+      padding: 15px 22px;
+      background: var(--hc-aqua);
+      color: var(--hc-blue-dark);
+    }
+    .hc-service__price strong { font-size: 1.25rem; }
+    .hc-service__price span { font-size: .7rem; }
+    .hc-service--wide { grid-column: span 3; min-height: auto; }
+    .hc-service--wide .hc-service__top { display: grid; grid-template-columns: 1fr 2fr; gap: 24px; }
+
+    .hc-flow { display: grid; grid-template-columns: 1fr; border-top: 2px solid var(--hc-line); counter-reset: none; }
+    .hc-flow__item { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .8fr); align-items: center; gap: 38px; padding: 34px 22px; border: 0; border-bottom: 2px solid var(--hc-line); border-radius: 0; background: #fff; text-align: left; }
+    .hc-flow__item::before { content: none; }
+    .hc-flow__item h3 { margin: 0 0 12px; color: var(--hc-navy); font-size: clamp(1.3rem, 2.2vw, 1.85rem); line-height: 1.45; }
+    .hc-flow__item p { margin: 0; color: var(--hc-muted); font-size: 1rem; line-height: 1.8; }
+    .hc-flow__image { min-height: 180px; aspect-ratio: 16 / 10; }
+
+    .hc-price-wrap { overflow-x: auto; border: 1px solid var(--hc-line); border-radius: 18px; background: #fff; }
+    .hc-price-table { width: 100%; min-width: 680px; border-collapse: collapse; }
+    .hc-price-table th, .hc-price-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--hc-line);
+      text-align: left;
+      vertical-align: top;
+    }
+    .hc-price-table th { background: var(--hc-blue-dark); color: #fff; font-size: .8rem; }
+    .hc-price-table tr:last-child td { border-bottom: 0; }
+    .hc-price-table td:nth-child(2) { color: var(--hc-orange-dark); font-weight: 900; white-space: nowrap; }
+    .hc-price-table small { display: block; color: var(--hc-muted); line-height: 1.5; }
+    .hc-price-attention {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      background: #fff4e9;
+      color: #70401f;
+      font-size: .85rem;
+    }
+
+    .hc-faq { display: grid; gap: 12px; }
+    .hc-faq details {
+      border: 1px solid var(--hc-line);
+      border-radius: 14px;
+      background: #fff;
+    }
+    .hc-faq summary {
+      position: relative;
+      padding: 20px 52px 20px 22px;
+      cursor: pointer;
+      font-weight: 900;
+      list-style: none;
+    }
+    .hc-faq summary::-webkit-details-marker { display: none; }
+    .hc-faq summary::after {
+      content: "+";
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      color: var(--hc-blue);
+      font-size: 1.4rem;
+      transform: translateY(-50%);
+    }
+    .hc-faq details[open] summary::after { content: "−"; }
+    .hc-faq__answer { padding: 0 22px 20px; color: var(--hc-muted); font-size: .91rem; }
+    .hc-faq__answer p { margin: 0; }
+
+    .hc-cta {
+      padding: 54px 0;
+      background: var(--hc-blue-dark);
+      color: #fff;
+      text-align: center;
+    }
+    .hc-cta h2 { margin: 0 0 12px; font-size: clamp(1.55rem, 4vw, 2.2rem); }
+    .hc-cta > .hc-container > p { margin: 0 auto 24px; color: rgba(255,255,255,.78); }
+    .hc-cta .hc-actions { justify-content: center; }
+    .hc-bonus {
+      list-style: none;
+      margin: 22px auto 26px;
+      padding: 0;
+      max-width: 620px;
+      display: grid;
+      gap: 11px;
+      text-align: left;
+      color: rgba(255,255,255,.92);
+      font-size: .97rem;
+      line-height: 1.75;
+    }
+    .hc-bonus li { position: relative; padding-left: 26px; }
+    .hc-bonus li::before {
+      content: "\2713";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-weight: 700;
+      color: #fff;
+    }
+    .hc-cta .hc-button--secondary { border-color: #fff; background: transparent; color: #fff; }
+
+    .hc-footer { padding: 32px 0 98px; background: #17282f; color: rgba(255,255,255,.72); }
+    .hc-footer__top { display: flex; justify-content: space-between; gap: 24px; }
+    .hc-footer strong { color: #fff; }
+    .hc-footer p { margin: 6px 0 0; font-size: .78rem; }
+    .hc-footer a { text-decoration: underline; }
+    .hc-area-label { margin: 24px 0 0; font-size: .86rem; font-weight: 800; color: var(--hc-blue); letter-spacing: .04em; }
+    .hc-area-list { list-style: none; margin: 10px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .hc-area-chip {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 11px 18px; border: 1px solid #c9d8dc; border-radius: 999px;
+      background: #fff; font-size: .95rem; font-weight: 700; color: var(--hc-ink);
+    }
+    .hc-area-chip span { font-size: .9em; }
+    .hc-area-chip--part { font-weight: 600; background: transparent; color: var(--hc-muted); }
+    .hc-image-slot--area { margin-top: 24px; aspect-ratio: 16 / 7; }
+    .hc-footer__info { margin-top: 0; }
+    .hc-footer__info dl { margin: 0; display: grid; gap: 10px; }
+    .hc-footer__info dl > div { display: flex; gap: 18px; align-items: baseline; }
+    .hc-footer__info dt { flex: 0 0 82px; color: #fff; font-weight: 800; font-size: .8rem; }
+    .hc-footer__info dd { margin: 0; font-size: .82rem; line-height: 1.7; }
+    .hc-footer__links { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; margin-top: 26px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.14); }
+    .hc-footer__links a { color: rgba(255,255,255,.82); font-size: .82rem; }
+    .hc-footer__copy { margin: 18px 0 0; text-align: center; font-size: .74rem; color: rgba(255,255,255,.5); }
+    @media (max-width: 640px) {
+      .hc-footer__info dl > div { flex-direction: column; gap: 2px; }
+      .hc-footer__links { gap: 14px; }
+    }
+    .hc-sticky {
+      position: fixed;
+      z-index: 120;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 8px max(12px, env(safe-area-inset-right)) calc(8px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      background: rgba(255,255,255,.97);
+      border-top: 2px solid var(--hc-line);
+      box-shadow: 0 -8px 26px rgba(18, 60, 70, .13);
+    }
+    .hc-sticky__inner {
+      display: flex;
+      align-items: stretch;
+      gap: 8px;
+      width: min(100%, 1080px);
+      min-height: 64px;
+      margin: 0 auto;
+    }
+    .hc-sticky__brand {
+      display: flex;
+      flex: 0 0 225px;
+      flex-direction: column;
+      justify-content: center;
+      padding-right: 16px;
+      border-right: 1px solid var(--hc-line);
+      color: #222;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+    .hc-sticky__brand span { color: #333; font-size: .65rem; font-weight: 500; }
+    .hc-sticky__brand strong { font-size: 1.08rem; font-weight: 600; }
+    .hc-sticky__tags {
+      display: grid;
+      flex: 0 0 280px;
+      grid-template-columns: 1fr 1fr;
+      align-content: center;
+      gap: 4px;
+      padding: 0 14px 0 6px;
+      border-right: 1px solid var(--hc-line);
+    }
+    .hc-sticky__tags span {
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--hc-blue);
+      color: #fff;
+      font-size: .62rem;
+      font-weight: 600;
+      line-height: 1.25;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .hc-sticky a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 54px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: .86rem;
+      font-weight: 600;
+      line-height: 1.25;
+      text-align: center;
+    }
+    .hc-sticky__tel { flex: 0 1 280px; min-width: 0; margin-left: auto; background: var(--hc-orange); }
+    .hc-sticky__tel strong { font-size: clamp(1rem, 1.6vw, 1.12rem); font-weight: 600; letter-spacing: .02em; }
+    .hc-sticky__form { flex: 0 1 280px; min-width: 0; background: var(--hc-form); }
+    .hc-sticky__form strong { font-weight: 600; }
+    .hc-sticky__tel-mobile { display: none; }
+    .hc-sticky small { display: block; margin-top: 2px; font-size: .62rem; font-weight: 400; opacity: .9; }
+
+    @media (max-width: 860px) {
+      .hc-hero__grid { grid-template-columns: 1fr; gap: 32px; }
+      .hc-hero__panel { max-width: 620px; }
+      .hc-concerns-layout { grid-template-columns: 1fr; }
+      .hc-card-grid, .hc-step-grid, .hc-service-grid { grid-template-columns: repeat(2, 1fr); }
+      .hc-service--wide { grid-column: span 2; }
+      .hc-flow { grid-template-columns: 1fr; }
+      .hc-flow__item { grid-template-columns: minmax(0, 1fr) minmax(220px, .8fr); gap: 24px; }
+      .hc-sticky__brand, .hc-sticky__tags { display: none; }
+      .hc-sticky__tel { margin-left: 0; }
+    }
+    @media (max-width: 640px) {
+      .hc-section { padding: 56px 0; }
+      .hc-header__tel { padding: 8px 12px; font-size: .78rem; }
+      .hc-brand__sub { display: none; }
+      .hc-hero { padding: 48px 0 44px; }
+      .hc-hero__copy { font-size: .96rem; }
+      .hc-actions { flex-direction: column; }
+      .hc-button { width: 100%; }
+      .hc-process { grid-template-columns: 1fr; gap: 26px; }
+      .hc-process::before { top: 28px; right: auto; bottom: 28px; left: 27px; width: 3px; height: auto; }
+      .hc-process article { display: grid; grid-template-columns: 56px 1fr; column-gap: 16px; text-align: left; }
+      .hc-process__no { grid-row: 1 / 3; width: 56px; height: 56px; margin: 0; border-width: 5px; }
+      .hc-benefit-panel { padding: 32px 22px; }
+      .hc-benefit-grid { grid-template-columns: 1fr; }
+      .hc-benefit-grid > div { padding: 18px 0; }
+      .hc-benefit-grid > div + div { border-top: 1px solid rgba(255,255,255,.32); border-left: 0; }
+      .hc-recommend-list { grid-template-columns: 1fr; padding-inline: 22px; }
+      .hc-recommend-list li:nth-last-child(2) { border-bottom: 1px solid var(--hc-line); }
+      .hc-proof__grid { grid-template-columns: 1fr; }
+      .hc-proof__item + .hc-proof__item { border-top: 1px solid var(--hc-line); border-left: 0; }
+      .hc-card-grid, .hc-step-grid, .hc-service-grid, .hc-voices { grid-template-columns: 1fr; }
+      .hc-service--wide { grid-column: auto; }
+      .hc-service--wide .hc-service__top { grid-template-columns: 1fr; gap: 4px; }
+      .hc-profile { grid-template-columns: 1fr; padding: 28px; }
+      .hc-profile__mark { width: 130px; }
+      .hc-flow { grid-template-columns: 1fr; }
+      .hc-flow__item { grid-template-columns: 1fr; gap: 18px; padding: 28px 0; }
+      .hc-flow__image { min-height: 0; }
+      .hc-footer__top { flex-direction: column; }
+      .hc-sticky__inner { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
+      .hc-sticky__tel, .hc-sticky__form { min-width: 0; padding-inline: 8px; }
+      .hc-sticky__tel strong { font-size: .9rem; }
+      .hc-sticky__tel-desktop { display: none; }
+      .hc-sticky__tel-mobile { display: inline; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .hc-button { transition: none; }
+    }
+
+    :root {
+      --hc-ink: #333;
+      --hc-muted: #333;
+      --hc-blue: #0288d1;
+      --hc-blue-dark: #0277bd;
+      --hc-aqua: #fff3f3;
+      --hc-cream: #fff3f3;
+      --hc-orange: #e53935;
+      --hc-orange-dark: #c62828;
+      --hc-form: #ff6b35;
+      --hc-line: #e0e0e0;
+      --hc-shadow: 0 4px 14px rgba(0, 0, 0, .10);
+    }
+    .hc-container { width: min(100% - 32px, 780px); }
+    .hc-section { padding: 52px 0; }
+    .hc-section--tint { background: #f7f8fa; }
+    .hc-section--cream { background: #fff3f3; }
+    .hc-eyebrow { display: none; }
+    .hc-title {
+      margin-bottom: 32px;
+      color: #222;
+      font-size: clamp(1.35rem, 4.5vw, 1.75rem);
+      font-weight: 900;
+      line-height: 1.45;
+    }
+    .hc-title strong { color: var(--hc-orange); }
+
+    .hc-header {
+      border-bottom: 0;
+      background: var(--hc-blue);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .20);
+      backdrop-filter: none;
+    }
+    .hc-header__inner { min-height: 60px; }
+    .hc-brand { flex-direction: row; align-items: baseline; gap: 6px; }
+    .hc-brand__sub, .hc-brand__main { color: #fff; }
+    .hc-brand__sub { font-size: .78rem; opacity: .9; }
+    .hc-brand__main { font-size: 1.25rem; }
+    .hc-header__tel {
+      min-height: auto;
+      padding: 7px 14px;
+      border: 1px solid rgba(255, 255, 255, .35);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .15);
+      box-shadow: none;
+      color: #fff;
+      font-size: .8rem;
+    }
+
+    .hc-hero {
+      isolation: isolate;
+      padding: 44px 0 52px;
+      background: #173044;
+      color: #fff;
+    }
+    .hc-hero::after { display: none; }
+    .hc-hero__bg { position: absolute; inset: 0; z-index: -2; }
+    .hc-hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+    .hc-hero__bg span { position: absolute; inset: 0; background: rgba(10, 40, 64, .35); }
+    .hc-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+      text-align: center;
+    }
+    .hc-hero__area {
+      justify-content: center;
+      margin-bottom: 14px;
+      color: #fff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, .35);
+    }
+    .hc-hero__area::before { background: #ffd54f; }
+    .hc-tags { justify-content: center; margin-bottom: 22px; }
+    .hc-tag {
+      min-height: 30px;
+      padding: 6px 14px;
+      border: 0;
+      background: var(--hc-orange);
+      color: #fff;
+      font-size: .75rem;
+      box-shadow: 0 2px 8px rgba(198, 40, 40, .20);
+    }
+    .hc-hero h1 {
+      color: #fff;
+      font-size: clamp(1.8rem, 6vw, 2.65rem);
+      line-height: 1.3;
+      letter-spacing: 0;
+      text-align: center;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, .35);
+    }
+    .hc-hero h1 em {
+      color: #ffd54f;
+      font-size: .68em;
+      letter-spacing: 0;
+    }
+    .hc-hero__copy {
+      max-width: 620px;
+      margin: 18px auto 22px;
+      color: rgba(255, 255, 255, .95);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.9;
+      text-align: center;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, .35);
+    }
+    .hc-actions { justify-content: center; }
+    .hc-hero .hc-actions > .hc-button { flex: 1 1 0; }
+    .hc-button { border-radius: 10px; }
+    .hc-button--primary {
+      background: var(--hc-orange);
+      box-shadow: 0 4px 14px rgba(229, 57, 53, .35);
+    }
+    .hc-button--secondary {
+      border-color: transparent;
+      background: var(--hc-form);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(255, 107, 53, .35);
+    }
+    .hc-hero__panel {
+      width: 100%;
+      max-width: 580px;
+      margin: 0 auto;
+      padding: 22px 24px;
+      border: 0;
+      border-left: 4px solid var(--hc-orange);
+      border-radius: 0 10px 10px 0;
+      background: rgba(255, 255, 255, .82);
+      box-shadow: 0 3px 12px rgba(0, 0, 0, .12);
+      color: #222;
+      text-align: left;
+    }
+    .hc-hero__panel::before { display: none; }
+    .hc-hero__panel h2 { text-align: center; }
+    .hc-checks li { color: #222; font-weight: 700; }
+    .hc-checks li::before { background: #e8f5e9; color: #28a745; }
+
+    .hc-proof { border-color: var(--hc-line); }
+    .hc-proof__item strong { color: var(--hc-blue); }
+    .hc-card {
+      border: 0;
+      border-left: 4px solid var(--hc-orange);
+      border-radius: 0 10px 10px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .07);
+    }
+    .hc-card__icon { border-radius: 50%; background: #fff3f3; color: var(--hc-orange); }
+    .hc-step { border-top: 4px solid var(--hc-orange); border-radius: 10px; box-shadow: var(--hc-shadow); }
+    .hc-step__no { color: var(--hc-orange); }
+    .hc-profile { border-radius: 12px; background: var(--hc-blue); }
+    .hc-profile__role { color: rgba(255, 255, 255, .86); }
+    .hc-message { border-left-color: var(--hc-orange); border-radius: 0 10px 10px 0; }
+    .hc-voice { border-color: #f1c7c5; border-radius: 12px; }
+    .hc-service { border-radius: 12px; }
+    .hc-service__label { color: var(--hc-orange); }
+    .hc-service__price { background: #fff3f3; color: var(--hc-orange-dark); }
+    .hc-flow__item { border-radius: 0; }
+    .hc-flow__item::before { color: var(--hc-orange); }
+    .hc-price-wrap { border-radius: 10px; }
+    .hc-price-table th { background: var(--hc-blue); }
+    .hc-price-attention { background: #fff3f3; color: #6f2d2b; }
+    .hc-faq details { border-radius: 8px; }
+    .hc-faq summary::after { color: var(--hc-orange); }
+    .hc-cta { background: var(--hc-blue); }
+    .hc-cta .hc-button--secondary { border-color: transparent; background: var(--hc-form); color: #fff; }
+    .hc-footer { background: #263238; }
+    .hc-sticky { box-shadow: 0 -4px 12px rgba(0, 0, 0, .14); }
+    .hc-sticky__tel { background: var(--hc-orange); }
+    .hc-sticky__form { background: var(--hc-form); }
+
+    .hc-image-slot {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 2px dashed #aebbc2;
+      border-radius: 10px;
+      background:
+        linear-gradient(135deg, rgba(2, 136, 209, .07), rgba(229, 57, 53, .07)),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,.75) 0 12px, rgba(247,248,250,.75) 12px 24px);
+      color: #52636c;
+      text-align: center;
+    }
+    .hc-image-slot__inner { padding: 18px; }
+    .hc-image-slot__icon { display: block; margin-bottom: 7px; font-size: 1.7rem; line-height: 1; }
+    .hc-image-slot strong { display: block; color: #34454e; font-size: .9rem; }
+    .hc-image-slot small { display: block; margin-top: 4px; font-size: .7rem; line-height: 1.5; }
+    .hc-image-slot--wide { aspect-ratio: 16 / 9; margin: 0 auto 28px; }
+    .hc-image-slot--profile { width: 100%; aspect-ratio: 1; border-color: rgba(255,255,255,.65); border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; }
+    .hc-image-slot--profile strong { color: #fff; }
+    .hc-image-slot--service { aspect-ratio: 4 / 3; border-width: 0 0 2px; border-radius: 0; }
+    .hc-image-slot--voice { aspect-ratio: 4 / 3; margin-bottom: 20px; }
+    
+    .hc-photo { display: block; width: 100%; height: auto; object-fit: cover; background: #eef2f4; }
+    .hc-photo--service { aspect-ratio: 4 / 3; border-bottom: 2px solid var(--hc-line); }
+    .hc-photo--flow { aspect-ratio: 16 / 10; border-radius: 10px; }
+    .hc-photo--area { aspect-ratio: 1120 / 602; margin-top: 24px; border-radius: 12px; }
+    .hc-photo--profile { width: 100%; aspect-ratio: 1; border-radius: 50%; }
+    .hc-ba-wrap { margin-bottom: 36px; }
+    .hc-visual-heading { margin: 0 0 16px; color: #222; font-size: 1.05rem; text-align: center; }
+    .hc-ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .hc-ba-grid .hc-image-slot { aspect-ratio: 4 / 3; }
+
+    .hc-hero h1 { color: #222; text-shadow: none; }
+    .hc-hero h1 em { color: #222; }
+    .hc-hero__city { color: #222; font-size: 40px; }
+    .hc-hero__service { color: #e53935; }
+    .hc-hero__copy { color: #222; text-shadow: none; }
+
+    @media (max-width: 640px) {
+      .hc-section { padding: 46px 0; }
+      .hc-hero__city { font-size: 1.625rem; }
+      .hc-hero__service { font-size: 2rem; }
+      .hc-brand { flex-direction: column; align-items: flex-start; gap: 0; }
+      .hc-brand__sub { display: block; font-size: .62rem; }
+      .hc-brand__main { font-size: 1rem; }
+      .hc-header__tel { padding: 6px 10px; font-size: .72rem; }
+      .hc-hero { padding: 34px 0 42px; }
+      .hc-hero__bg img { object-position: 58% top; }
+      .hc-tags { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .hc-tag { justify-content: center; padding-inline: 8px; white-space: nowrap; }
+      .hc-hero__panel { padding: 20px 16px; }
+      .hc-image-slot--wide { aspect-ratio: 4 / 3; }
+      .hc-ba-grid { grid-template-columns: 1fr; }
+      .hc-image-slot--profile { width: 150px; }
+    }
+
+    .hc-hero__actions { margin-top: 28px; }
+    .hc-hero .hc-hero__panel { max-width: 580px; }
+    .hc-concerns-layout { display: block; max-width: 760px; margin-inline: auto; }
+    .hc-service-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+    .hc-service-grid .hc-service {
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+      grid-column: auto;
+      align-items: center;
+      gap: 30px;
+      padding: 28px 0;
+      border: 0;
+      border-bottom: 1px solid var(--hc-line);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+    .hc-service-grid .hc-service:first-child { padding-top: 0; }
+    .hc-service-grid .hc-service:last-child { padding-bottom: 0; border-bottom: 0; }
+    .hc-service-grid .hc-service__top { display: block; padding: 0; }
+    .hc-service-grid .hc-service__top h3 { margin: 0 0 12px; font-size: 1.2rem; }
+    .hc-service-grid .hc-service__top p { margin: 0; line-height: 1.85; }
+    .hc-service-grid .hc-service__label { display: none; }
+    .hc-service-grid .hc-image-slot--service { border: 2px dashed #aebbc2; border-radius: 10px; }
+    .hc-reason-list { margin: 0; padding: 0; list-style: none; counter-reset: reasons; }
+    .hc-reason-list li { display: grid; grid-template-columns: 60px 1fr; gap: 22px; padding: 28px 0; border-bottom: 1px solid var(--hc-line); counter-increment: reasons; }
+    .hc-reason-list li:first-child { padding-top: 0; }
+    .hc-reason-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+    .hc-reason-list li::before { content: counter(reasons, decimal-leading-zero); color: var(--hc-blue); font-size: 2rem; font-weight: 900; line-height: 1.3; }
+    .hc-reason-list h3 { margin: 0 0 9px; font-size: 1.16rem; line-height: 1.5; }
+    .hc-reason-list p { margin: 0; color: var(--hc-muted); }
+    .hc-cta .hc-actions { max-width: 680px; margin-inline: auto; }
+    .hc-cta .hc-actions > .hc-button { flex: 1 1 0; }
+    .hc-ba-wrap { margin-bottom: 0; }
+    @media (max-width: 640px) {
+      .hc-hero__actions { margin-top: 28px; }
+      .hc-service-grid .hc-service { grid-template-columns: 1fr; gap: 18px; }
+      .hc-service-grid .hc-service__top h3 { font-size: 1.1rem; }
+      .hc-reason-list li { grid-template-columns: 40px 1fr; gap: 12px; }
+      .hc-reason-list li::before { font-size: 1.65rem; }
+      .hc-reason-list h3 { font-size: 1.04rem; }
+    }
+
+    .hc-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 96px 0 104px;
+      background: #fff;
+    }
+    .hc-hero::after { display: none; }
+    .hc-hero__bg { position: absolute; inset: 0; z-index: 0; }
+    .hc-hero__bg img { width: 100%; height: 100%; object-fit: cover; object-position: 78% center; }
+    .hc-hero__bg span { display: none; }
+    .hc-hero__bg::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right,
+        #fff 0%,
+        #fff 42%,
+        rgba(255,255,255,.96) 56%,
+        rgba(255,255,255,.70) 72%,
+        rgba(255,255,255,.25) 88%,
+        rgba(255,255,255,0) 97%);
+    }
+    .hc-hero__grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, .82fr);
+      align-items: center;
+      gap: 0;
+    }
+    .hc-hero__grid > div:first-child { max-width: 620px; }
+    .hc-hero__actions { width: auto; max-width: 620px; margin: 30px 0 0; }
+    .hc-hero .hc-actions { justify-content: flex-start; }
+
+    .hc-promises { position: relative; z-index: 2; margin-top: -52px; padding: 0; }
+    .hc-promises__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .hc-promise {
+      background: #fff;
+      border: 1px solid #c9d8dc;
+      border-radius: 14px;
+      padding: 10px 13px 11px;
+      box-shadow: 0 4px 12px rgba(22, 107, 131, .06);
+    }
+    .hc-promise h2 { margin: 0 0 8px; font-size: 1.02rem; color: var(--hc-blue-dark); }
+    .hc-promise p { margin: 0; font-size: .9rem; line-height: 1.75; color: #333; }
+
+    @media (max-width: 900px) {
+      .hc-hero { padding: 56px 0 64px; }
+      .hc-hero__grid { grid-template-columns: 1fr; }
+      .hc-hero__space { display: none; }
+      .hc-hero__bg img { object-position: 68% center; }
+      .hc-hero__bg::after {
+        background: linear-gradient(to bottom,
+          rgba(255,255,255,.95) 0%,
+          rgba(255,255,255,.90) 50%,
+          rgba(255,255,255,.84) 100%);
+      }
+      .hc-promises { margin-top: 0; padding: 26px 0 0; }
+      .hc-promises__grid { grid-template-columns: 1fr; gap: 12px; }
+    }
+    .hc-hero__service { font-size: clamp(2.1rem, 4.4vw, 70px); white-space: nowrap; }
+    .hc-hero__city { font-size: clamp(1.5rem, 2.6vw, 40px); }
+
+    .hc-hero__grid { text-align: left; }
+    .hc-hero h1 { text-align: left; }
+    .hc-hero__area { justify-content: flex-start; }
+    .hc-hero__copy { margin-inline: 0; }
+    .hc-hero .hc-tags { justify-content: flex-start; }
+    .hc-hero .hc-actions { justify-content: flex-start; }
+
+    @media (max-width: 900px) {
+      .hc-hero__grid { text-align: left; }
+      .hc-hero h1 { text-align: left; }
+    }
+
+    .hc-hero__grid,
+    .hc-hero__grid > div,
+    .hc-hero h1,
+    .hc-hero__copy,
+    .hc-hero__area { text-align: left; }
+    .hc-hero__copy { margin-left: 0; margin-right: 0; max-width: 560px; }
+    .hc-hero__grid > div:first-child { margin-left: 0; }
+
+    .hc-hero .hc-container { width: min(77%, 1560px); margin-inline: auto; }
+
+    .hc-hero { padding: 52px 0 40px; }
+    .hc-hero__grid { align-items: start; }
+    .hc-hero__grid > div:first-child { max-width: 680px; }
+    .hc-hero__actions { margin: 26px 0 0; }
+
+    .hc-promises__grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+      grid-column: 1 / -1;
+    }
+    .hc-promise {
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(2px);
+      border: 1px solid #c9d8dc;
+      border-radius: 14px;
+      padding: 9px 12px 10px;
+      box-shadow: 0 4px 12px rgba(22, 107, 131, .06);
+    }
+    .hc-promise h2 { margin: 0 0 6px; font-size: .98rem; color: var(--hc-blue-dark); }
+    .hc-promise p { margin: 0; font-size: .86rem; line-height: 1.7; color: #333; }
+
+    @media (max-width: 900px) {
+      .hc-hero .hc-container { width: min(100% - 32px, 780px); }
+      .hc-hero { padding: 40px 0 36px; }
+      .hc-promises__grid { grid-template-columns: 1fr; gap: 10px; margin-top: 28px; }
+    }
+
+    .hc-hero { padding: 52px 0 40px; }
+    .hc-hero h1 { margin-bottom: 26px; line-height: 1.3; }
+    .hc-hero__copy { margin-top: 0; line-height: 1.9; }
+    .hc-hero__actions { margin-top: 28px; gap: 14px; }
+    .hc-promises__grid { margin-top: 38px; gap: 18px; }
+    .hc-promise { padding: 10px 13px 11px; }
+
+    .hc-hero .hc-actions .hc-button--secondary,
+    .hc-hero .hc-actions a.hc-button--secondary {
+      background: rgba(255,255,255,.94) !important;
+      color: #0277bd !important;
+      border: 2px solid #0277bd !important;
+      box-shadow: none;
+    }
+
+    @media (max-width: 900px) {
+      .hc-hero .hc-container { width: min(100% - 32px, 780px); }
+      .hc-hero { padding: 40px 0 36px; }
+      .hc-promises__grid { margin-top: 30px; gap: 10px; }
+    }
+
+    .hc-hero .hc-container { width: min(81.6%, 1560px); margin-inline: auto; }
+
+    .hc-hero__grid { display: block; }
+    .hc-hero__grid > div:first-child { max-width: 32.6%; min-width: 300px; }
+    .hc-hero__space { display: none; }
+
+    .hc-hero__city   { font-size: clamp(1.4rem, 2.1vw, 27px); line-height: 1.42; }
+    .hc-hero__service{ font-size: clamp(2rem, 4vw, 51.2px);   line-height: 1.42; }
+    .hc-hero h1      { line-height: 1.42; margin: 0; }
+    .hc-hero h1 em   { font-size: clamp(1rem, 1.65vw, 21.1px); line-height: 1.6; }
+    .hc-hero__copy   { font-size: 14.7px; line-height: 1.85; max-width: 29.9%; min-width: 300px; }
+
+    .hc-hero h1 em      { display: block; margin-bottom: 13px; }
+    .hc-hero__service   { margin-bottom: 0; }
+    .hc-hero__copy      { margin: 13px 0 0; }
+    .hc-hero__actions   { margin: 17px 0 0; gap: 12px; }
+    .hc-promises__grid  { margin-top: 74px; gap: 12px; }
+
+    .hc-hero .hc-actions .hc-button {
+      min-height: 67px; padding: 16.8px 22.4px;
+      border-radius: 999px; font-size: 16.3px; line-height: 1.8;
+      flex: 0 0 auto; white-space: nowrap;
+    }
+    .hc-hero .hc-actions .hc-button--primary   { min-width: 353px; }
+    .hc-hero .hc-actions .hc-button--secondary { min-width: 208px; }
+
+    .hc-promises__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .hc-promise {
+      min-height: 0; padding: 10px 13px 11px;
+      border-radius: 14px; border: 1px solid #c9d8dc;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(22, 107, 131, .06);
+    }
+    .hc-promise h2 { margin: 0 0 4px; font-size: 15px; line-height: 1.5; }
+    .hc-promise p  { margin: 0; font-size: 13px; line-height: 1.7; }
+
+    .hc-hero { padding: 56px 0 44px; }
+
+    @media (max-width: 900px) {
+      .hc-hero .hc-container { width: min(100% - 32px, 780px); }
+      .hc-hero__grid > div:first-child,
+      .hc-hero__copy { max-width: 100%; min-width: 0; }
+      .hc-hero .hc-actions .hc-button { min-width: 0; width: 100%; white-space: normal; }
+      .hc-promises__grid { grid-template-columns: 1fr; margin-top: 34px; }
+    }
+
+    .hc-hero .hc-hero__actions {
+      max-width: none !important;
+      width: 100%;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+    }
+
+    .hc-sticky {
+      transform: translateY(110%);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform .28s ease, opacity .28s ease, visibility .28s;
+    }
+    .hc-sticky.is-visible {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .hc-sticky { transition: none; }
+    }
+
+    .hc-hero .hc-promises__grid {
+      width: 100%;
+      max-width: none;
+      margin-left: 0;
+      margin-right: 0;
+    }
+
+    .hc-hero__city { font-size: clamp(1.96rem, 2.94vw, 37.6px); }
+
+    .hc-hero__copy { max-width: 380px; min-width: 0; }
+
+    .hc-hero .hc-actions .hc-button--primary,
+    .hc-hero .hc-actions .hc-button--secondary {
+      min-width: 320px;
+      justify-content: center;
+    }
+
+    .hc-hero__grid > div:first-child { max-width: min(40%, 420px); min-width: 0; }
+    .hc-hero__city { white-space: nowrap; }
+    .hc-hero__copy { max-width: 400px; }
+
+    .hc-hero .hc-promises__grid {
+      max-width: 56vw;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @media (max-width: 900px) {
+      .hc-hero .hc-promises__grid { max-width: none; grid-template-columns: 1fr; }
+    }
+
+    .hc-hero { padding: 24px 0 14px; }
+
+    .hc-hero__city    { font-size: clamp(2.1rem, 4.1vw, 52.6px); }
+    .hc-hero__service { font-size: clamp(2.6rem, 5.6vw, 71.7px); }
+    .hc-hero__copy    { font-size: 20.6px; max-width: 560px; }
+
+    .hc-hero__grid > div:first-child { max-width: min(56%, 700px); }
+
+    .hc-hero__actions { margin-top: 26px; }
+    .hc-hero .hc-promises__grid { margin-top: 18px; }
+
+    @media (max-width: 900px) {
+      .hc-hero { padding: 28px 0 20px; }
+      .hc-hero__city    { font-size: clamp(1.5rem, 6vw, 32px); }
+      .hc-hero__service { font-size: clamp(1.9rem, 8vw, 44px); white-space: normal; }
+      .hc-hero__copy    { font-size: 16px; max-width: none; }
+      .hc-hero__grid > div:first-child { max-width: none; }
+    }
+
+    .hc-hero__city    { font-size: clamp(1.89rem, 3.69vw, 47.3px); }
+    .hc-hero__service { font-size: clamp(2.34rem, 5.04vw, 64.5px); }
+
+    .hc-hero__note { display: inline-block; margin-top: 6px; font-weight: 700; }
+
+    .hc-hero .hc-actions .hc-button--secondary,
+    .hc-hero .hc-actions a.hc-button--secondary {
+      background: var(--hc-form) !important;
+      color: #fff !important;
+      border: 2px solid var(--hc-form) !important;
+    }
+
+    @media (max-width: 640px) {
+      .hc-price-table { min-width: 0; width: 100%; table-layout: fixed; }
+      .hc-price-table th, .hc-price-table td { padding: 10px 8px; font-size: .78rem; }
+      .hc-price-table th { font-size: .7rem; }
+      .hc-price-table th:nth-child(1), .hc-price-table td:nth-child(1) { width: 34%; }
+      .hc-price-table th:nth-child(2), .hc-price-table td:nth-child(2) { width: 40%; }
+      .hc-price-table th:nth-child(3), .hc-price-table td:nth-child(3) { width: 26%; }
+    }
+
+    @media (max-width: 420px) {
+      .hc-hero__service { font-size: clamp(1.5rem, 8.6vw, 2.34rem); }
+    }
+
+    h2, h3, .hc-faq summary,
+    .hc-cta p,
+    .hc-hero__copy,
+    #flow .hc-lead,
+    .hc-price-set td:nth-child(1), .hc-price-set td:nth-child(3),
+    .hc-price-table th, .hc-price-menu td:nth-child(1), .hc-price-menu td:nth-child(3),
+    .hc-menu-area {
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 640px) {
+      .hc-note { font-size: .95rem; color: var(--hc-ink); }
+      .hc-service-grid .hc-service__top p { font-size: .95rem; }
+    }
+
+    @media (max-width: 640px) {
+      .hc-footer__info dt { flex: 0 0 auto; }
+    }
+
+    .hc-hero__hours { margin: 10px 0 0; color: #333; font-size: .86rem; font-weight: 700; }
+    
+    .hc-voices { grid-template-columns: 1fr; gap: 16px; }
+    .hc-voice { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 22px; align-items: start; padding: 22px; }
+    .hc-voice__img { width: 100%; height: auto; border: 1px solid var(--hc-line); border-radius: 8px; background: #fff; }
+    .hc-voice__tags { margin: 0 0 6px; color: var(--hc-muted); font-size: .8rem; font-weight: 700; }
+    .hc-voice blockquote { margin: 8px 0 0; }
+    
+    .hc-service-grid .hc-service--text { grid-template-columns: 1fr; gap: 0; }
+    .hc-service--text .hc-service__top p + p { margin-top: 10px; }
+    .hc-menu-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 8px 16px; border: 2px solid var(--hc-blue); border-radius: 999px; color: var(--hc-blue-dark); font-size: .9rem; font-weight: 700; }
+    .hc-menu-link::after { content: "→"; }
+    
+    .hc-flow__item--text { grid-template-columns: 1fr; }
+    
+    .hc-price-basic { min-width: 0; }
+    .hc-price-basic td:nth-child(2) { white-space: normal; }
+    
+    .hc-offer { margin-top: 22px; padding: 20px 22px; border: 2px solid var(--hc-orange); border-radius: 12px; background: #fff; }
+    .hc-offer__label { display: inline-block; margin: 0 0 8px; padding: 3px 12px; border-radius: 999px; background: var(--hc-orange); color: #fff; font-size: .8rem; font-weight: 800; }
+    .hc-offer h3 { margin: 0 0 8px; font-size: 1.1rem; }
+    .hc-offer p { margin: 0; }
+    .hc-offer .hc-offer__note { margin-top: 8px; color: var(--hc-muted); font-size: .82rem; }
+    
+    .hc-area-group { margin: 30px 0 0; font-size: 1.05rem; }
+    .hc-area-list--compact { gap: 8px; }
+    .hc-area-list--compact .hc-area-chip { padding: 6px 12px; font-size: .85rem; }
+    
+    .hc-faq__answer a, .hc-flow__item p a { text-decoration: underline; }
+    
+    .hc-message .hc-message__sign { text-align: right; font-weight: 700; }
+    @media (max-width: 640px) {
+      .hc-voice { grid-template-columns: 1fr; gap: 14px; padding: 18px; }
+      .hc-price-basic th:nth-child(1), .hc-price-basic td:nth-child(1) { width: 30%; }
+      .hc-price-basic th:nth-child(2), .hc-price-basic td:nth-child(2) { width: 70%; }
+    }
+      #price { scroll-margin-top: 72px; }
+    @media (max-width: 359px) { .hc-hero .hc-actions .hc-button { min-width: 0; } }
+  </style>
+</head>
+<body <?php body_class('hc-lp'); ?>>
+
+<header class="hc-header">
+  <div class="hc-container hc-header__inner">
+    <a class="hc-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="ぐるり屋本舗 トップページ">
+      <span class="hc-brand__sub">神奈川の便利屋</span>
+      <span class="hc-brand__main">ぐるり屋本舗</span>
+    </a>
+    <a class="hc-header__tel" href="<?php echo esc_url($gr_contact_url); ?>">✉️ お問い合わせ</a>
+  </div>
+</header>
+
+<main>
+  <!-- 1. 最初の画面 -->
+  <section class="hc-hero">
+    <div class="hc-hero__bg" aria-hidden="true">
+      <img src="<?php echo esc_url($gr_hero_image); ?>" width="1672" height="941" fetchpriority="high" decoding="async" alt="">
+      <span></span>
+    </div>
+    <div class="hc-container hc-hero__grid">
+      <div>
+        <h1><span class="hc-hero__city">神奈川の</span><span class="hc-hero__service">便利屋</span></h1>
+        <p class="hc-hero__copy">ちょっとした<wbr>雑用から、<wbr>片付け・<wbr>草刈りまで<br>ひとつだけのご依頼でもお伺いします<br><strong class="hc-hero__note">金額は、<wbr>現地で<wbr>一緒に<wbr>確かめてから<wbr>決めます</strong></p>
+      </div>
+      <div class="hc-hero__space" aria-hidden="true"></div>
+      <div class="hc-actions hc-hero__actions">
+        <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
+        <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
+      </div>
+      <p class="hc-hero__hours">受付 9:00〜19:00（年中無休）</p>
+      <div class="hc-container hc-promises__grid" aria-label="ご依頼前のお約束">
+        <div class="hc-promise">
+          <h2>見積もりは<wbr>無料</h2>
+          <p>見積もりだけで終わっても、出張費・車両費はかかりません</p>
+        </div>
+        <div class="hc-promise">
+          <h2>小さな<wbr>依頼も<wbr>OK</h2>
+          <p>電球の交換ひとつからでも伺います</p>
+        </div>
+        <div class="hc-promise">
+          <h2>その<wbr>場で<wbr>決めなくて<wbr>OK</h2>
+          <p>金額を聞いてから後日でも大丈夫です</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 悩み -->
+  <section class="hc-section">
+    <div class="hc-container">
+      <h2 class="hc-title">こんな<strong>お困りごと</strong>、<wbr>ありませんか？</h2>
+      <div class="hc-concerns-layout">
+        <ul class="hc-concern-list">
+          <li><h3>不用品がたまっているけれど、<wbr>どこに<wbr>頼めばいいか<wbr>分からない</h3><p>気になりながら、手をつけられずにいる。</p></li>
+          <li><h3>家具を<wbr>動かしたいけれど、<wbr>一人では<wbr>無理</h3><p>引越しや模様替えで、男手が足りない。</p></li>
+          <li><h3>草が<wbr>伸び<wbr>放題になっている</h3><p>近所に申し訳ない思いをしている。</p></li>
+          <li><h3>頼んだあとに<wbr>追加料金を<wbr>言われそうで<wbr>怖い</h3><p>業者に頼むのは初めてで、なかなか踏み出せない。</p></li>
+          <li><h3>ひとつだけの<wbr>依頼で<wbr>来てもらうのは<wbr>気が<wbr>引ける</h3><p>「これくらいで呼んでいいのかな」と止まってしまう。</p></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. こうお答えします -->
+  <section class="hc-section hc-section--tint">
+    <div class="hc-container">
+      <h2 class="hc-title">その<strong>お悩み</strong>に、<wbr>こうお答えします</h2>
+      <ol class="hc-reason-list">
+        <li><div><h3>お電話で、<wbr>およその<wbr>金額をお伝えします</h3><p>「何を・どのくらい」を教えていただければ大丈夫です。お伝えするのは仮のお見積もりで、金額は伺ってから決めます。</p></div></li>
+        <li><div><h3>金額は、<wbr>現地で<wbr>一緒に<wbr>確かめてから<wbr>決めます</h3><p>作業の内容を見て、仮のお見積もりから変わるときは理由をご説明します。その場で決めていただかなくても大丈夫です。</p></div></li>
+        <li><div><h3>ひとつだけのご依頼でも<wbr>大丈夫です</h3><p>家具ひとつの移動、電球ひとつの交換でも伺います。「こんなこと頼んでいいの？」というご遠慮は要りません。</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 4. お任せいただくとこうなります -->
+  <section class="hc-section">
+    <div class="hc-container">
+      <h2 class="hc-title"><strong>お任せ</strong>いただくと、<wbr>こうなります</h2>
+      <ol class="hc-reason-list">
+        <li><div><h3>仕分けや<wbr>準備のことも、<wbr>ご相談ください</h3><p>重い荷物の移動は、そのままお任せください。「何から手をつければ…」という状態でも大丈夫です。</p></div></li>
+        <li><div><h3>小さな<wbr>作業なら、<wbr>当日に<wbr>伺えることもあります</h3><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。金額は現地で決めます。</p></div></li>
+        <li><div><h3>「いくらになるのか」<wbr>と<wbr>心配しなくて<wbr>済みます</h3><p>ご依頼いただくときは、作業の内容と金額、クーリング・オフについてなどを書いた書面をお渡しします。現地で決めた金額は、お客様から追加のご依頼がない限り、あとで変わることはありません。</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 5. こんな方に -->
+  <section class="hc-section hc-section--tint">
+    <div class="hc-container">
+      <h2 class="hc-title">こんな<wbr>方に<strong>おすすめ</strong>です</h2>
+      <div class="hc-concerns-layout">
+        <ul class="hc-concern-list">
+          <li><h3>高齢のご両親の<wbr>実家が<wbr>片付かない方</h3></li>
+          <li><h3>共働きや<wbr>子育てで、<wbr>時間が<wbr>取れない方</h3></li>
+          <li><h3>引越しや<wbr>模様替えで、<wbr>家具を<wbr>動かしたい方</h3></li>
+          <li><h3>庭の<wbr>草や<wbr>木の<wbr>手入れが<wbr>追いつかない方</h3></li>
+          <li><h3>「こんなこと<wbr>頼んでいいの？」<wbr>と<wbr>思っている方</h3></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. ご相談を受ける人 -->
+  <section class="hc-section" id="profile">
+    <div class="hc-container">
+      <h2 class="hc-title">ご相談を<wbr>受ける人</h2>
+      <div class="hc-profile">
+        <img class="hc-photo hc-photo--profile" src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-higuchi.jpg" width="720" height="720" loading="lazy" decoding="async" alt="ぐるり屋本舗の樋口勝己">
+        <div>
+          <p class="hc-profile__role">ぐるり屋本舗 代表</p>
+          <h2>樋口 勝己</h2>
+          <p><strong>神奈川でこの仕事を始めたのは、「困っている人の隣に、駆けつけられる存在になりたい」という想いからです。</strong></p>
+          <p>専門の業者さんには頼みにくい「ちょっとした作業」でも、ご依頼いただくたびに、お客様の「良かった」という笑顔が、何より大きなやりがいになっています。</p>
+          <p>屋号の「ぐるり屋本舗」には、「ぐるっと回って、みんなのそばにいる」という気持ちを込めました。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 作業事例：本物の写真がたまったら足す枠（今は出さない） -->
+
+  <!-- お客様の声（実際のお客様。文と札はアンケート用紙のとおり） -->
+  <section class="hc-section hc-section--tint" id="voice">
+    <div class="hc-container">
+      <h2 class="hc-title">実際に<wbr>ご利用<wbr>いただいた<wbr><strong>お客様の声</strong></h2>
+      <div class="hc-voices">
+        <article class="hc-voice">
+          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice1.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
+          <div>
+            <p class="hc-voice__tags">📍 相模原市　👤 30代　🔧 ハウスクリーニング</p>
+            <div class="hc-stars" aria-label="星5つ">⭐⭐⭐⭐⭐</div>
+            <blockquote>家の水回り（キッチン、お風呂）をお願いし、キレイにしていただきました。ありがとうございました。</blockquote>
+          </div>
+        </article>
+        <article class="hc-voice">
+          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice2.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
+          <div>
+            <p class="hc-voice__tags">📍 横浜市　👤 70代　🔧 買い物代行・付き添い</p>
+            <div class="hc-stars" aria-label="星5つ">⭐⭐⭐⭐⭐</div>
+            <blockquote>スタッフの対応は、感じがよかったです。作業内容は、バッチリ。お願いした以上の細まやかな作業も気軽にやっていただきました。又お願いしたいです。</blockquote>
+          </div>
+        </article>
+        <article class="hc-voice">
+          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice3.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
+          <div>
+            <p class="hc-voice__tags">📍 川崎市　👤 50代　🔧 不用品回収・片付け</p>
+            <div class="hc-stars" aria-label="星5つ">⭐⭐⭐⭐⭐</div>
+            <blockquote>断捨離でいらなくなった家電やテーブルなどを回収してもらいました。とても丁寧な対応で安心しておまかせできました。また不用品が出たときはお願いしたいと思います。</blockquote>
+          </div>
+        </article>
+      </div>
+      <p class="hc-note">不用品の回収・処分は、現在は許可を持つ業者に手配してお任せしています。</p>
+    </div>
+  </section>
+
+  <!-- 7. 問い合わせの帯 -->
+  <section class="hc-cta">
+    <div class="hc-container">
+      <h2>小さなことから、<wbr>ご相談ください</h2>
+      <p>お見積もりは<wbr>無料です。<wbr>お電話なら、<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
+      <div class="hc-actions">
+        <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
+        <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. メニュー -->
+  <section class="hc-section hc-section--tint" id="service">
+    <div class="hc-container">
+      <h2 class="hc-title">メニュー</h2>
+      <p class="hc-lead">片付けから<wbr>庭の<wbr>手入れ、<wbr>家具の<wbr>移動まで。<wbr>ここに<wbr>載っていない<wbr>作業も、<wbr>まずはご相談ください。</p>
+      <div class="hc-service-grid">
+        <article class="hc-service hc-service--text"><div class="hc-service__top">
+          <h3>片付け・<wbr>不用品</h3>
+          <p>片付けは、現地でお見積もりしてから、別の日に作業します。</p>
+          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：遺品整理・<wbr>生前整理／<wbr>ゴミ屋敷の<wbr>片付け・<wbr>清掃／<wbr>引越しのときに<wbr>残った<wbr>物の<wbr>片付け／<wbr>空き<wbr>家の<wbr>片付け／<wbr>不用品の<wbr>回収・<wbr>処分のご相談</p>
+          <p class="hc-note">不用品の回収と処分は、許可を持つ業者に手配してお任せします。ぐるり屋本舗がご相談をお受けし、段取りをいたします。</p>
+        </div></article>
+        <article class="hc-service hc-service--text"><div class="hc-service__top">
+          <h3>庭・<wbr>外まわり</h3>
+          <p>草刈りや剪定は、現地で広さや量を見てお見積もりし、別の日に作業します。</p>
+          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：草刈り・<wbr>除草・<wbr>草むしり／<wbr>庭木の<wbr>剪定・<wbr>伐採／<wbr>防草シートの<wbr>施工／<wbr>空き<wbr>地の<wbr>雑草処理</p>
+        </div></article>
+        <article class="hc-service hc-service--text"><div class="hc-service__top">
+          <h3>室内・<wbr>清掃</h3>
+          <p>ハウスクリーニングは、専用のページで内容と料金をご案内しています。</p>
+          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：ハウスクリーニング／<wbr>エアコン清掃／<wbr>水回り<wbr>清掃<wbr>（キッチン・<wbr>浴室・<wbr>トイレ）／<wbr>ベランダ掃除</p>
+          <p><a class="hc-menu-link" href="<?php echo esc_url(home_url('/housecleaning-sagamihara')); ?>">ハウスクリーニングのページを見る</a></p>
+          <p class="hc-note">専用のページは相模原・町田エリアのご案内です。ほかのエリアは、お電話でご相談ください。</p>
+        </div></article>
+        <article class="hc-service hc-service--text"><div class="hc-service__top">
+          <h3>運搬・<wbr>作業</h3>
+          <p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。金額は現地で決めます。</p>
+          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：家具の<wbr>移動・<wbr>組み<wbr>立て・<wbr>解体／<wbr>電球の<wbr>交換／<wbr>小さな<wbr>引越しのお手伝い／<wbr>荷物の<wbr>運搬・<wbr>運び<wbr>出し</p>
+        </div></article>
+        <article class="hc-service hc-service--text"><div class="hc-service__top">
+          <h3>そのほか</h3>
+          <p>お受けできるかどうか、内容を伺ってお答えします。</p>
+          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：買い<wbr>物代行／<wbr>病院の<wbr>付き<wbr>添い／<wbr>話し<wbr>相手・<wbr>見守り／<wbr>シニア向けの<wbr>定期訪問／<wbr>空き<wbr>家の<wbr>見回り・<wbr>ポストの<wbr>確認／<wbr>害虫・<wbr>害獣の<wbr>駆除／<wbr>ちょっとした<wbr>修繕・<wbr>補修／<wbr>各種の<wbr>代行</p>
+        </div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 先にお伝えしていること -->
+  <section class="hc-section" id="reasons">
+    <div class="hc-container">
+      <h2 class="hc-title">先にお伝えしていること</h2>
+      <ol class="hc-reason-list">
+        <li><div><h3>作業を<wbr>始める<wbr>前に、<wbr>金額を<wbr>決めます</h3><p>仮のお見積もりから変わるときは、理由と一緒に現地でお伝えします。ご依頼のときは、金額やクーリング・オフについてなどを書いた書面をお渡しします。</p></div></li>
+        <li><div><h3>当日できるかどうかは、<wbr>先にお伝えします</h3><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます（金額は現地で決めます）。片付けや草刈りなどは、お見積もりのあと別の日です。</p></div></li>
+        <li><div><h3>その<wbr>日に<wbr>決めていただくことはありません</h3><p>金額を聞いてから、後日のお返事で構いません。無理におすすめはしません。</p></div></li>
+        <li><div><h3>小さなご依頼も、<wbr>まずはお聞きします</h3><p>電球ひとつの交換からご相談ください。お受けできないときは、理由をお伝えします。</p></div></li>
+        <li><div><h3>終わったら、<wbr>一緒に<wbr>確かめていただきます</h3><p>現金でお支払いの場合は、仕上がりを一緒に見ていただいてからお支払いください。</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 10. よくある質問 -->
+  <section class="hc-section hc-section--cream" id="faq">
+    <div class="hc-narrow">
+      <h2 class="hc-title">よくあるご質問</h2>
+      <div class="hc-faq">
+        <details><summary>お電話で<wbr>聞いた<wbr>金額から<wbr>変わることはありますか？</summary><div class="hc-faq__answer"><p>お電話でお伝えするのは仮のお見積もりです。現地で作業の内容を確かめて、そこで金額を決めます。荷物の量や作業の内容によっては、仮のお見積もりから変わることがあり、そのときは理由をご説明します。現地で決めた金額は、お客様から追加のご依頼がない限り変わりません。</p></div></details>
+        <details><summary>その<wbr>日のうちに<wbr>来てもらえますか？</summary><div class="hc-faq__answer"><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。金額は現地で決めます。片付け・不用品・草刈りなど、現地を見ないと金額が決まらない作業は、先にお見積もりに伺い、作業は別の日になります。</p></div></details>
+        <details><summary>土日・<wbr>祝日でも<wbr>対応してもらえますか？</summary><div class="hc-faq__answer"><p>年中無休です。お電話の受付は9:00〜19:00です。フォームはいつでも送れます。お返事は翌営業日までにします。</p></div></details>
+        <details><summary>小さな<wbr>依頼でも<wbr>来てもらえますか？</summary><div class="hc-faq__answer"><p>家具ひとつの移動、電球ひとつの交換からでも伺います。小さなご依頼こそ、遠慮なくご相談ください。</p></div></details>
+        <details><summary>ほかの<wbr>業者に<wbr>断られた<wbr>作業でも、<wbr>相談できますか？</summary><div class="hc-faq__answer"><p>ご相談ください。お受けできるかどうか、内容を伺ってお答えします。</p></div></details>
+        <details><summary>初めてで<wbr>不安なのですが…</summary><div class="hc-faq__answer"><p>作業の内容と金額をご説明し、ご納得いただいてから作業を始めます。ご依頼いただくときは、作業の内容と金額、クーリング・オフについてなどを書いた書面をお渡しします。強引な勧誘はしません。</p></div></details>
+        <details><summary>キャンセルはできますか？</summary><div class="hc-faq__answer"><p>作業を始める前のキャンセルは無料です。作業の当日でも、料金はいただきません。クーリング・オフができる場合を除き、作業を始めたあとは、お見積もりで決めた金額のうち、それまでに済んだ作業の分（作業の時間で計算します）をいただきます。当方の都合や落ち度で作業ができなかったときは、お金はいただきません。前払いいただいた分は、クーリング・オフのときと、当方の都合や落ち度のときは、振込手数料も差し引かずに全額お返しします。クーリング・オフについては、ご契約のときにお渡しする書面でご説明します。くわしくは「<a href="#price">料金</a>」と「<a href="<?php echo esc_url(home_url('/tokusho/')); ?>">特定商取引法に基づく表記</a>」をご覧ください。</p></div></details>
+        <details><summary>支払い<wbr>方法を<wbr>教えてください。</summary><div class="hc-faq__answer"><p>現金でお願いしています。作業が終わったあと、その場でお支払いください。遠方などで現金が難しい場合は、銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. 料金 -->
+  <section class="hc-section" id="price">
+    <div class="hc-container">
+      <h2 class="hc-title">料金</h2>
+      <div class="hc-price-wrap">
+        <table class="hc-price-table hc-price-basic">
+          <thead><tr><th>項目</th><th>税込料金</th></tr></thead>
+          <tbody>
+            <tr><td>作業費</td><td>3,300円〜（税込）/ 1名・1時間</td></tr>
+            <tr><td>出張費</td><td>2,200円〜（税込）</td></tr>
+            <tr><td>車両費</td><td>3,300円〜（税込）</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hc-note">作業の内容・人数・時間によって金額は変わります。</p>
+      <p class="hc-note">出張費は、作業に伺う日ごとにかかります。車両費は、車を使う作業のときだけかかります。作業費は1名・1時間ごとに数えます。1時間に満たないときも、1時間分をいただきます。</p>
+      <div class="hc-offer">
+        <p class="hc-offer__label">初回限定</p>
+        <h3>はじめてご利用のお客様へ</h3>
+        <p>初回のご依頼に限り、作業費から10%割引いたします。「まず試してみたい」という方も安心してご連絡ください。</p>
+        <p class="hc-offer__note">※お電話のときか、現地で金額を決めるときにお申し出ください。他の割引との併用はできません。</p>
+      </div>
+      <p class="hc-price-attention">表示はすべて<strong>税込</strong>です。<strong>お見積もりは無料です。見積もりだけで終わった場合も、出張費・車両費はかかりません。</strong>お電話でお伝えするのは<strong>仮のお見積もり</strong>です。金額は、<strong>現地で作業の内容を確かめ、ご説明したうえで決めます。決めた金額は、お客様から追加のご依頼がない限り、あとで増えることはありません。</strong></p>
+      <p class="hc-note">対応エリアの外は交通費を、コインパーキングを使うときは駐車場代（実費）を、別にいただきます。どちらもお見積もりのときにご説明します。</p>
+      <p class="hc-note"><strong>お支払いは現金でお願いしています。</strong>作業が終わったあと、その場でお支払いください。領収書をお出しします。遠方などで現金が難しい場合は、銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p>
+      <p class="hc-note"><strong>作業を始める前のキャンセルは無料です。</strong>作業の当日でも、料金はいただきません。クーリング・オフができる場合を除き、作業を始めたあとのキャンセルは、お見積もりで決めた金額のうち、それまでに済んだ作業の分（作業の時間で計算します）をいただきます。日程の変更は前日までにご連絡ください。銀行振込で前払いいただいたあとに、お客様のご都合でキャンセルされた場合は、クーリング・オフの場合を除き、返金のときの振込手数料を差し引いてお返しします（済んだ作業の分をいただくときは、その分も差し引きます）。クーリング・オフのときは、振込手数料も差し引かずに全額お返しします。当方の都合や落ち度で作業ができなかったときは、お金はいただかず、前払いいただいた分は振込手数料も差し引かずに全額お返しします。クーリング・オフについては、ご契約のときにお渡しする書面でご説明します。</p>
+    </div>
+  </section>
+
+  <!-- 12. お伺いするエリア -->
+  <section class="hc-section hc-section--tint" id="area">
+    <div class="hc-container">
+      <h2 class="hc-title">神奈川県全域と、<wbr>東京都の<wbr>一部へお伺いします</h2>
+      <p class="hc-lead">横浜・<wbr>川崎・<wbr>相模原をはじめ、<wbr>神奈川県内の<wbr>全域へ<wbr>伺います。<wbr>東京都の<wbr>町田市・<wbr>多摩市にも<wbr>伺います。</p>
+      <h3 class="hc-area-group">神奈川県<wbr>（全域）</h3>
+      <p class="hc-area-label">横浜市（全18区）</p>
+      <ul class="hc-area-list hc-area-list--compact">
+        <li class="hc-area-chip">鶴見区</li>
+        <li class="hc-area-chip">神奈川区</li>
+        <li class="hc-area-chip">西区</li>
+        <li class="hc-area-chip">中区</li>
+        <li class="hc-area-chip">南区</li>
+        <li class="hc-area-chip">港南区</li>
+        <li class="hc-area-chip">保土ケ谷区</li>
+        <li class="hc-area-chip">旭区</li>
+        <li class="hc-area-chip">磯子区</li>
+        <li class="hc-area-chip">金沢区</li>
+        <li class="hc-area-chip">港北区</li>
+        <li class="hc-area-chip">緑区</li>
+        <li class="hc-area-chip">青葉区</li>
+        <li class="hc-area-chip">都筑区</li>
+        <li class="hc-area-chip">栄区</li>
+        <li class="hc-area-chip">戸塚区</li>
+        <li class="hc-area-chip">瀬谷区</li>
+        <li class="hc-area-chip">泉区</li>
+      </ul>
+      <p class="hc-area-label">川崎市（全7区）</p>
+      <ul class="hc-area-list hc-area-list--compact">
+        <li class="hc-area-chip">川崎区</li>
+        <li class="hc-area-chip">幸区</li>
+        <li class="hc-area-chip">中原区</li>
+        <li class="hc-area-chip">高津区</li>
+        <li class="hc-area-chip">宮前区</li>
+        <li class="hc-area-chip">多摩区</li>
+        <li class="hc-area-chip">麻生区</li>
+      </ul>
+      <p class="hc-area-label">相模原市（全3区）</p>
+      <ul class="hc-area-list hc-area-list--compact">
+        <li class="hc-area-chip">緑区</li>
+        <li class="hc-area-chip">中央区</li>
+        <li class="hc-area-chip">南区</li>
+      </ul>
+      <p class="hc-area-label">そのほかの市</p>
+      <ul class="hc-area-list hc-area-list--compact">
+        <li class="hc-area-chip">横須賀市</li>
+        <li class="hc-area-chip">平塚市</li>
+        <li class="hc-area-chip">鎌倉市</li>
+        <li class="hc-area-chip">藤沢市</li>
+        <li class="hc-area-chip">小田原市</li>
+        <li class="hc-area-chip">茅ヶ崎市</li>
+        <li class="hc-area-chip">逗子市</li>
+        <li class="hc-area-chip">三浦市</li>
+        <li class="hc-area-chip">秦野市</li>
+        <li class="hc-area-chip">厚木市</li>
+        <li class="hc-area-chip">大和市</li>
+        <li class="hc-area-chip">伊勢原市</li>
+        <li class="hc-area-chip">海老名市</li>
+        <li class="hc-area-chip">座間市</li>
+        <li class="hc-area-chip">南足柄市</li>
+        <li class="hc-area-chip">綾瀬市</li>
+      </ul>
+      <p class="hc-area-label">町・村</p>
+      <ul class="hc-area-list hc-area-list--compact">
+        <li class="hc-area-chip">葉山町</li>
+        <li class="hc-area-chip">寒川町</li>
+        <li class="hc-area-chip">大磯町</li>
+        <li class="hc-area-chip">二宮町</li>
+        <li class="hc-area-chip">中井町</li>
+        <li class="hc-area-chip">大井町</li>
+        <li class="hc-area-chip">松田町</li>
+        <li class="hc-area-chip">山北町</li>
+        <li class="hc-area-chip">開成町</li>
+        <li class="hc-area-chip">箱根町</li>
+        <li class="hc-area-chip">真鶴町</li>
+        <li class="hc-area-chip">湯河原町</li>
+        <li class="hc-area-chip">愛川町</li>
+        <li class="hc-area-chip">清川村</li>
+      </ul>
+      <h3 class="hc-area-group">東京都</h3>
+      <ul class="hc-area-list hc-area-list--compact">
+        <li class="hc-area-chip">町田市</li>
+        <li class="hc-area-chip">多摩市</li>
+      </ul>
+      <p class="hc-note">上のほかのエリアも、まずはご相談ください。対応エリアの外は、交通費を別にいただきます。</p>
+    </div>
+  </section>
+
+  <!-- 13. 問い合わせの帯 -->
+  <section class="hc-cta">
+    <div class="hc-container">
+      <h2>小さなことから、<wbr>ご相談ください</h2>
+      <p>お見積もりは<wbr>無料です。<wbr>お電話なら、<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
+      <div class="hc-actions">
+        <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
+        <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 14. ご依頼の流れ -->
+  <section class="hc-section" id="flow">
+    <div class="hc-container">
+      <h2 class="hc-title">ご依頼の<wbr>流れ</h2>
+      <p class="hc-lead">お問い<wbr>合わせからお支払いまで、<wbr>4つの<wbr>ステップです</p>
+      <div class="hc-flow">
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>01　お問い<wbr>合わせ</h3><p>お電話またはフォームからご連絡ください。何を・どのくらい・いつごろ・どこで、を教えてください。<strong>お電話なら、その場でおよその金額（仮のお見積もり）をお伝えします。</strong><br>電話 <a href="tel:09021626510">090-2162-6510</a>（9:00〜19:00・年中無休）／フォームはいつでも送れます。<strong>お返事は翌営業日までにします。</strong></p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>02　現地でお見積もり</h3><p><strong>無料です。見積もりだけで終わっても、出張費・車両費はかかりません。</strong>伺って、作業の内容を一緒に確かめ、金額を決めます。仮のお見積もりから変わるときは、ここで理由をご説明します。<strong>ご依頼いただくときは、作業の内容と金額、クーリング・オフについてなどを書いた書面をお渡しします。その場で決めていただかなくても大丈夫です。</strong>あとからご依頼いただくときは、お電話かフォームでご連絡ください。作業の日は、ご希望をお聞きして一緒に決めます。</p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>03　作業</h3><p><strong>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。</strong>金額は現地で決めます。片付け・不用品・草刈りなど、お見積もりが必要な作業は、日を改めて伺います。作業の前に床や壁を養生し、土足では上がりません。</p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>04　お支払い</h3><p><strong>作業が終わったら、仕上がりを一緒に見ていただきます。</strong>ご確認いただいてから、<strong>現金</strong>でその場でお支払いください。領収書をお出しします。遠方などで現金が難しい場合は、銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15. 最後に -->
+  <section class="hc-section">
+    <div class="hc-container">
+      <h2 class="hc-title">最後に</h2>
+      <div class="hc-message">
+        <p><strong>「困っているけれど、どこに頼めばいいかわからない」</strong><br>便利屋は、そんな方のそばに寄り添う仕事だと思っています。</p>
+        <p><strong>お電話一本、フォームからの一通で構いません。</strong><br>「これくらいのことで頼んでいいの？」というご遠慮は要りません。</p>
+        <p><strong>金額は、伺って一緒に確かめてから決めます。</strong><br>お願いするかどうかは、金額を聞いてから決めていただいて大丈夫です。</p>
+        <p><strong>困ったときに「あのお店、頼んでよかった」と思っていただける、そんな便利屋でありたいと思っています。</strong><br>誠心誠意お伺いします。</p>
+        <p class="hc-message__sign">ぐるり屋本舗　代表　樋口勝己</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16. 問い合わせの帯 -->
+  <section class="hc-cta">
+    <div class="hc-container">
+      <h2>小さなことから、<wbr>ご相談ください</h2>
+      <p>お見積もりは<wbr>無料です。<wbr>お電話なら、<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
+      <div class="hc-actions">
+        <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
+        <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="hc-footer">
+  <div class="hc-container hc-footer__info">
+    <dl>
+      <div><dt>事業者名</dt><dd>つづく制作室合同会社（サイト名：ぐるり屋本舗）</dd></div>
+      <div><dt>代表</dt><dd>樋口勝己</dd></div>
+      <div><dt>所在地</dt><dd>請求があった場合、遅滞なく開示いたします</dd></div>
+      <div><dt>対応エリア</dt><dd>神奈川県全域／東京都（町田市・多摩市）</dd></div>
+      <div><dt>電話</dt><dd><a href="tel:09021626510">090-2162-6510</a></dd></div>
+      <div><dt>受付時間</dt><dd>9:00〜19:00（年中無休）</dd></div>
+    </dl>
+  </div>
+  <div class="hc-container hc-footer__links">
+    <a href="<?php echo esc_url(home_url('/tokusho/')); ?>">特定商取引法に基づく表記</a>
+    <a href="<?php echo esc_url(home_url('/privacy/')); ?>">プライバシーポリシー</a>
+    <a href="<?php echo esc_url($gr_contact_url); ?>">お問い合わせ</a>
+  </div>
+  <p class="hc-footer__copy">&copy; 2026 ぐるり屋本舗 All Rights Reserved.</p>
+</footer>
+
+<nav class="hc-sticky" aria-label="お問い合わせ">
+  <div class="hc-sticky__inner">
+    <div class="hc-sticky__brand">
+      <span>神奈川の便利屋</span>
+      <strong>ぐるり屋本舗</strong>
+    </div>
+    <div class="hc-sticky__tags" aria-label="受付・対応条件">
+      <span>見積もり無料</span>
+      <span>年中無休</span>
+      <span>作業前に金額を決定</span>
+      <span>小さな依頼OK</span>
+    </div>
+    <a class="hc-sticky__tel" href="tel:09021626510"><strong><span class="hc-sticky__tel-desktop">📞 090-2162-6510</span><span class="hc-sticky__tel-mobile">📞 電話で相談</span></strong><small>9:00〜19:00</small></a>
+    <a class="hc-sticky__form" href="<?php echo esc_url($gr_contact_url); ?>"><strong>フォーム受付</strong><small>いつでも送れます</small></a>
+  </div>
+</nav>
+
+<?php wp_footer(); ?>
+
+<script>
+// 追従フッター：最初の画面のボタンが画面から出たら表示する（器の相模原のページと同じ仕組み）。
+(function () {
+  var bar = document.querySelector('.hc-sticky');
+  var anchor = document.querySelector('.hc-hero__actions') || document.querySelector('.hc-hero');
+  if (!bar || !anchor) return;
+  var SHOW_AT = 100;
+  function update() {
+    bar.classList.toggle('is-visible', anchor.getBoundingClientRect().bottom < SHOW_AT);
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
