@@ -1327,52 +1327,212 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     }
       #price { scroll-margin-top: 72px; }
     @media (max-width: 359px) { .hc-hero .hc-actions .hc-button { min-width: 0; } }
+    /* ===== 2026-11-07 最初の画面の作り直し（上の帯 .gr-topbar・ヒーロー .gr-hero・すぐ下の申し込みの帯 .gr-cta）。
+       新しい部分は gr- 始まりのクラスだけで組む。上の古い .hc-hero 系の指定は残してあるが、新しい部分には hc-hero を付けていないので効かない。
+       例外はボタンの入れ物の hc-hero__actions（末尾の script の目印）。古い指定の幅・余白・間隔は .gr-cta .gr-actions で上書きする ===== */
+    .gr-topbar, .gr-hero, .gr-cta {
+      --gr-ink: #333;
+      --gr-head: #222;
+      --gr-blue: #2196f3;
+      --gr-blue-dark: #2196f3;
+      --gr-band: #2196f3;
+      --gr-cta-red: #e53935;
+      --gr-red: #e53935;
+      --gr-red-dark: #c62828;
+      --gr-form: #ff6b35;
+      color: var(--gr-ink);
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.8;
+      letter-spacing: 0;
+      text-align: left;
+    }
+    .gr-topbar p, .gr-hero p, .gr-hero ul, .gr-hero li, .gr-hero h1, .gr-cta h2, .gr-cta p { margin: 0; padding: 0; }
+    .gr-hero ul { list-style: none; }
+    .gr-topbar strong, .gr-hero strong, .gr-cta strong { font-weight: 700; }
+    /* 言葉の途中で折れないようにする。HTML 側では文節の区切りに wbr タグを入れてある */
+    .gr-hero h1, .gr-cta h2, .gr-hero .gr-kw { word-break: keep-all; overflow-wrap: anywhere; }
+    .gr-hero .gr-nowrap, .gr-cta .gr-nowrap { white-space: nowrap; }
+    @media (min-width: 641px) {
+      .gr-hero .gr-br-sp { display: none; }
+    }
+
+    /* 0. 上の帯 */
+    .gr-topbar { background: #d9534f; color: #fff; }
+    .gr-topbar__inner { display: flex; align-items: center; gap: 10px; width: min(81.6%, 1560px); margin-inline: auto; padding: 10px 0; }
+    .gr-topbar small { display: block; font-size: .72rem; font-weight: 700; line-height: 1.4; opacity: .95; }
+    .gr-topbar strong { display: block; font-size: 1.15rem; font-weight: 700; line-height: 1.4; letter-spacing: .02em; }
+    @media (max-width: 900px) {
+      .gr-topbar__inner { width: calc(100% - 32px); }
+    }
+
+    /* 1. 最初の画面 */
+    .gr-hero { position: relative; z-index: 0; overflow: hidden; padding: 28px 0 40px; background: #fff; }
+    .gr-hero__photo { position: absolute; top: 0; right: 0; bottom: 0; z-index: -1; width: 48%; }
+    .gr-hero .gr-hero__photo img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 60% 30%; }
+    .gr-hero__photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, .78) 20%, rgba(255, 255, 255, 0) 52%);
+    }
+    .gr-hero__inner { position: relative; width: min(81.6%, 1560px); margin-inline: auto; }
+    .gr-hero__text { max-width: min(56%, 640px); line-height: 1.6; }
+    .gr-hero .gr-hero__title { margin: 0 0 12px; color: var(--gr-red); font-size: 16px; font-weight: 900; line-height: 1.25; }
+    .gr-hero .gr-hero__sub { margin: 0 0 10px; color: #111; font-size: clamp(1.32rem, 2.04vw, 1.68rem); font-weight: 700; line-height: 1.5; }
+    .gr-hero .gr-hero__copy { margin: 0; padding-top: 10px; border-top: 1px dashed #999; color: #111; font-size: 1.14rem; font-weight: 700; line-height: 1.6; }
+    .gr-hero .gr-hero__price { margin: 2px 0 0; color: var(--gr-red-dark); font-size: 1.14rem; font-weight: 800; line-height: 1.4; }
+    .gr-hero__yen { font-size: 1.2em; }
+    .gr-hero .gr-hero__area { display: inline-block; margin: 0 0 10px; padding: 4px 12px; border: 1.5px solid var(--gr-red); border-radius: 999px; background: #fff; color: var(--gr-red-dark); font-size: .8rem; font-weight: 700; line-height: 1.5; text-shadow: none; }
+    .gr-hero__lead { display: block; color: #222; font-size: clamp(1.35rem, 2.2vw, 1.7rem); line-height: 1.3; }
+    .gr-hero__brand { display: block; color: var(--gr-red); font-size: clamp(2.3rem, 4.2vw, 3.4rem); line-height: 1.2; letter-spacing: .02em; }
+    .gr-hero .gr-hero__other { margin: 2px 0 0; padding-bottom: 10px; border-bottom: 1px dashed #999; color: #111; font-size: 1.14rem; font-weight: 700; line-height: 1.6; }
+    .gr-hero .gr-promises {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: min(56vw, 640px);
+      margin: 16px 0 0;
+    }
+    .gr-hero .gr-promises > li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 78px;
+      padding: 10px 8px;
+      border: 1px solid #b3d9f9;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(33, 150, 243, .08);
+      color: var(--gr-blue-dark);
+      font-size: 1.2rem;
+      font-weight: 800;
+      line-height: 1.3;
+      text-align: center;
+    }
+    .gr-hero .gr-hero__points { display: grid; gap: 6px; margin: 18px 0 0; line-height: 1.5; }
+    .gr-hero .gr-hero__points > li { position: relative; padding-left: 26px; color: var(--gr-head); font-size: 1rem; font-weight: 700; }
+    .gr-hero .gr-hero__points > li::before { content: "\2713"; position: absolute; top: .05em; left: 2px; color: var(--gr-red); font-weight: 900; }
+    /* パソコンの幅：最初の画面を1画面に収める。行を詰め、札の3つは文字に合わせた小さな枠にする */
+    @media (min-width: 901px) {
+      .gr-hero .gr-br-nopc { display: none; }
+      .gr-hero { padding: 16px 0 20px; }
+      .gr-hero .gr-hero__title { margin-bottom: 8px; }
+      .gr-hero .gr-hero__sub { margin-bottom: 8px; }
+      .gr-hero .gr-hero__copy { padding-top: 6px; line-height: 1.5; }
+      .gr-hero .gr-hero__price { line-height: 1.3; }
+      .gr-hero .gr-hero__other { padding-bottom: 6px; line-height: 1.5; }
+      .gr-hero .gr-hero__price .gr-hero__yen { margin-left: .3em; }
+      .gr-hero .gr-promises { display: flex; flex-wrap: wrap; gap: 12px; max-width: none; margin-top: 12px; }
+      .gr-hero .gr-promises > li { min-height: 0; padding: 6px 18px; border-radius: 10px; }
+      .gr-hero .gr-hero__points { gap: 2px; margin-top: 10px; line-height: 1.4; }
+    }
+
+    /* 1-2. 申し込みの帯（最初の画面のすぐ下） */
+    .gr-cta { padding: 54px 0; background: var(--gr-band); color: #fff; text-align: center; }
+    .gr-cta__container { width: min(100% - 32px, 780px); margin-inline: auto; }
+    .gr-cta .gr-cta__title { margin: 0 0 24px; color: #fff; font-size: clamp(1.45rem, 4vw, 2.1rem); font-weight: 900; line-height: 1.6; }
+    .gr-cta .gr-cta__title strong { color: var(--gr-cta-red); font-weight: inherit; }
+    .gr-cta .gr-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: auto; max-width: 680px; margin: 0 auto; }
+    .gr-cta .gr-btn {
+      display: inline-flex;
+      flex: 1 1 0;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 13px 24px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      text-decoration: none;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .gr-cta a.gr-btn, .gr-cta a.gr-btn:visited { color: #fff; }
+    .gr-cta .gr-btn:hover { transform: translateY(-2px); }
+    .gr-cta .gr-btn--tel { background: var(--gr-red); box-shadow: 0 4px 14px rgba(229, 57, 53, .35); }
+    .gr-cta .gr-btn--form { background: var(--gr-form); box-shadow: 0 4px 14px rgba(255, 107, 53, .35); }
+    .gr-cta .gr-cta__hours { margin: 14px 0 0; color: #fff; font-size: .86rem; font-weight: 700; line-height: 1.6; opacity: .95; }
+
+    /* スマホ・タブレット */
+    @media (max-width: 900px) {
+      .gr-hero { padding: 22px 0 34px; }
+      .gr-hero .gr-hero__title { line-height: 1.3; }
+      .gr-hero .gr-promises { max-width: none; gap: 8px; margin-top: 18px; }
+      .gr-hero__inner { width: calc(100% - 32px); }
+      .gr-hero__text { max-width: none; text-shadow: 0 0 4px #fff, 0 0 8px #fff; }
+      .gr-hero__photo { bottom: auto; width: 54%; height: 392px; }
+      .gr-hero__photo::after {
+        background:
+          linear-gradient(to top, #fff 0%, rgba(255, 255, 255, 0) 20%),
+          linear-gradient(to right, #fff 0%, rgba(255, 255, 255, .62) 26%, rgba(255, 255, 255, 0) 62%);
+      }
+      .gr-hero .gr-hero__copy, .gr-hero .gr-hero__other { font-size: 1.04rem; }
+      .gr-hero .gr-hero__price { font-size: 1.08rem; }
+    }
+    @media (max-width: 640px) {
+      .gr-hero .gr-promises > li { min-height: 70px; font-size: 1.12rem; }
+      .gr-cta .gr-actions { flex-direction: column; }
+      .gr-cta .gr-btn { flex: 0 0 auto; width: 100%; }
+    }
+    /* 地域の札は2字長いので、狭い画面だけ字を少し小さくして1行に収める */
+    @media (max-width: 400px) {
+      .gr-hero .gr-hero__area { padding: 4px 10px; font-size: .75rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gr-cta .gr-btn { transition: none; }
+    }
   </style>
 </head>
 <body <?php body_class('hc-lp'); ?>>
 
-<header class="hc-header">
-  <div class="hc-container hc-header__inner">
-    <a class="hc-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="ぐるり屋本舗 トップページ">
-      <span class="hc-brand__sub">神奈川の便利屋</span>
-      <span class="hc-brand__main">ぐるり屋本舗</span>
-    </a>
-    <a class="hc-header__tel" href="<?php echo esc_url($gr_contact_url); ?>">✉️ お問い合わせ</a>
+<!-- 0. 上の帯（2026-11-07 最初の画面の作り直し。ロゴ画像は無いので文字だけ） -->
+<header class="gr-topbar">
+  <div class="gr-topbar__inner">
+    <div><small>神奈川県全域の便利屋</small><strong>ぐるり屋本舗</strong></div>
   </div>
 </header>
 
 <main>
-  <!-- 1. 最初の画面 -->
-  <section class="hc-hero">
-    <div class="hc-hero__bg" aria-hidden="true">
-      <img src="<?php echo esc_url($gr_hero_image); ?>" width="1672" height="941" fetchpriority="high" decoding="async" alt="">
-      <span></span>
+  <!-- 1. 最初の画面（左に文、右に写真） -->
+  <section class="gr-hero">
+    <div class="gr-hero__photo" aria-hidden="true"><img src="<?php echo esc_url($gr_hero_image); ?>" width="1672" height="941" alt="" loading="eager" fetchpriority="high" decoding="async"></div>
+    <div class="gr-hero__inner">
+      <div class="gr-hero__text">
+        <p class="gr-hero__area gr-kw">横浜・川崎・相模原・藤沢・厚木ほか<wbr>神奈川県全域対応</p>
+        <h1 class="gr-hero__title"><span class="gr-hero__lead">神奈川県の<wbr>便利屋なら</span><span class="gr-hero__brand">ぐるり屋本舗</span></h1>
+        <p class="gr-hero__sub gr-kw">ちょっとした<wbr>困りごとを、<br class="gr-br-nopc"><wbr>ひとつから頼みたい方へ</p>
+        <p class="gr-hero__copy gr-kw">金額は、<wbr>現地で<wbr>一緒に<wbr>確かめてから決定<br>相談だけ・<wbr>見積もりだけでもOK</p>
+        <p class="gr-hero__price gr-kw">作業費（1名・1時間）<br class="gr-br-nopc"><span class="gr-hero__yen gr-nowrap">3,300円（税込）〜</span><br>出張費 <br class="gr-br-nopc"><span class="gr-hero__yen gr-nowrap">2,200円（税込）〜</span></p>
+        <p class="gr-hero__other gr-kw">片付け・<wbr>草刈り・<wbr>家具の移動・<wbr>電球の交換も<wbr>お受けします！</p>
+      </div>
+      <ul class="gr-promises">
+        <li>年中<br class="gr-br-nopc">無休</li>
+        <li>見積もり<br class="gr-br-nopc">無料</li>
+        <li>県内<br class="gr-br-nopc">全域</li>
+      </ul>
+      <ul class="gr-hero__points gr-kw">
+        <li>電球の交換<wbr>ひとつからでも<wbr>伺います</li>
+        <li>見積もりだけで<wbr>終わっても、<br class="gr-br-sp"><wbr>出張費・<wbr>車両費は<wbr>かかりません</li>
+        <li>その場で<wbr>決めなくても<wbr>大丈夫です</li>
+      </ul>
     </div>
-    <div class="hc-container hc-hero__grid">
-      <div>
-        <h1><span class="hc-hero__city">神奈川の</span><span class="hc-hero__service">便利屋</span></h1>
-        <p class="hc-hero__copy">ちょっとした<wbr>雑用から、<wbr>片付け・<wbr>草刈りまで<br>ひとつだけのご依頼でもお伺いします<br><strong class="hc-hero__note">金額は、<wbr>現地で<wbr>一緒に<wbr>確かめてから<wbr>決めます</strong></p>
+  </section>
+
+  <!-- 1-2. 申し込み（最初の画面のすぐ下）。ボタンの入れ物の hc-hero__actions は、ページ末尾の script が追従フッターを出す目印なので外さない -->
+  <section class="gr-cta">
+    <div class="gr-cta__container">
+      <h2 class="gr-cta__title">初回のご依頼は<wbr><strong class="gr-nowrap">作業費10%割引</strong></h2>
+      <div class="gr-actions hc-hero__actions">
+        <a class="gr-btn gr-btn--tel" href="tel:09021626510">📞 電話で<wbr>聞いてみる</a>
+        <a class="gr-btn gr-btn--form" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで<wbr>相談する</a>
       </div>
-      <div class="hc-hero__space" aria-hidden="true"></div>
-      <div class="hc-actions hc-hero__actions">
-        <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
-        <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
-      </div>
-      <p class="hc-hero__hours">受付 9:00〜19:00（年中無休）</p>
-      <div class="hc-container hc-promises__grid" aria-label="ご依頼前のお約束">
-        <div class="hc-promise">
-          <h2>見積もりは<wbr>無料</h2>
-          <p>見積もりだけで終わっても、出張費・車両費はかかりません</p>
-        </div>
-        <div class="hc-promise">
-          <h2>小さな<wbr>依頼も<wbr>OK</h2>
-          <p>電球の交換ひとつからでも伺います</p>
-        </div>
-        <div class="hc-promise">
-          <h2>その<wbr>場で<wbr>決めなくて<wbr>OK</h2>
-          <p>金額を聞いてから後日でも大丈夫です</p>
-        </div>
-      </div>
+      <p class="gr-cta__hours">受付 9:00〜19:00（年中無休）</p>
     </div>
   </section>
 
