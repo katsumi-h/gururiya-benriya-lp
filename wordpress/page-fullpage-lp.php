@@ -4,7 +4,7 @@
  * Description: ヘッダー・フッターなしの全幅LPテンプレート（ぐるり屋本舗 トップページ用）
  */
 /* 2026-11-07 大幅改修。器は相模原のハウスクリーニングのページ（page-housecleaning-sagamihara.php）の見た目・部品・CSS。
-   文は「2026-11-07_便利屋トップ_新原稿.md」の第1部（本人確定）。
+   文は「2026-11-07_便利屋トップ_新原稿.md」の第1部（本人確定）。2026-11-08 に「2026-11-08_便利屋トップ_新原稿_第2版.md」の第1部を入れた。
    お問い合わせは共通の /contact/ へ（?service= は付けない。共通の問い合わせページは触らない）。
    計測は改修前のトップと同じ（wp_head と wp_footer だけ。相模原の dataLayer の行は持ち込まない）。 */
 $gr_contact_url = home_url('/contact/');
@@ -17,7 +17,7 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>神奈川の便利屋｜ぐるり屋本舗 – 片付け・草刈り・家具の移動など</title>
-  <meta name="description" content="神奈川の便利屋ぐるり屋本舗。片付け・草刈り・家具の移動など、小さなご依頼からお受けします。金額は現地で確かめてから決めます。見積もり無料。TEL 090-2162-6510">
+  <meta name="description" content="神奈川の便利屋ぐるり屋本舗。片付け・草刈り・家具の移動など、小さなご依頼からお受けします。金額は現地で確かめてから決めます。見積り無料。TEL 090-2162-6510">
   <?php wp_head(); ?>
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -1179,21 +1179,8 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
       justify-content: flex-start;
     }
 
-    .hc-sticky {
-      transform: translateY(110%);
-      opacity: 0;
-      visibility: hidden;
-      transition: transform .28s ease, opacity .28s ease, visibility .28s;
-    }
-    .hc-sticky.is-visible {
-      transform: translateY(0);
-      opacity: 1;
-      visibility: visible;
-    }
-    
-    @media (prefers-reduced-motion: reduce) {
-      .hc-sticky { transition: none; }
-    }
+    /* 追従フッターは、スマホもパソコンも読み込んだときから出す（2026-11-08 本人決定。静岡のハウスクリーニングLPと同じく、隠す指定と script を持たない）。
+       前の「最初の画面のボタンが画面から出たら出す」指定（transform・opacity・visibility と .is-visible）は外した */
 
     .hc-hero .hc-promises__grid {
       width: 100%;
@@ -1307,12 +1294,6 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     .hc-price-basic { min-width: 0; }
     .hc-price-basic td:nth-child(2) { white-space: normal; }
     
-    .hc-offer { margin-top: 22px; padding: 20px 22px; border: 2px solid var(--hc-orange); border-radius: 12px; background: #fff; }
-    .hc-offer__label { display: inline-block; margin: 0 0 8px; padding: 3px 12px; border-radius: 999px; background: var(--hc-orange); color: #fff; font-size: .8rem; font-weight: 800; }
-    .hc-offer h3 { margin: 0 0 8px; font-size: 1.1rem; }
-    .hc-offer p { margin: 0; }
-    .hc-offer .hc-offer__note { margin-top: 8px; color: var(--hc-muted); font-size: .82rem; }
-    
     .hc-area-group { margin: 30px 0 0; font-size: 1.05rem; }
     .hc-area-list--compact { gap: 8px; }
     .hc-area-list--compact .hc-area-chip { padding: 6px 12px; font-size: .85rem; }
@@ -1327,51 +1308,230 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     }
       #price { scroll-margin-top: 72px; }
     @media (max-width: 359px) { .hc-hero .hc-actions .hc-button { min-width: 0; } }
+    /* ===== 2026-11-07 最初の画面の作り直し（上の帯 .gr-topbar・ヒーロー .gr-hero・すぐ下の申し込みの帯 .gr-cta）。
+       新しい部分は gr- 始まりのクラスだけで組む。上の古い .hc-hero 系の指定は残してあるが、新しい部分には hc-hero を付けていないので効かない。
+       例外はボタンの入れ物の hc-hero__actions（前は末尾の script の目印。2026-11-08 に script を外したが名前は残す）。古い指定の幅・余白・間隔は .gr-cta .gr-actions で上書きする ===== */
+    .gr-topbar, .gr-hero, .gr-cta {
+      --gr-ink: #333;
+      --gr-head: #222;
+      --gr-blue: #2196f3;
+      --gr-blue-dark: #2196f3;
+      --gr-band: #2196f3;
+      --gr-cta-red: #e53935;
+      --gr-red: #e53935;
+      --gr-red-dark: #c62828;
+      --gr-form: #ff6b35;
+      color: var(--gr-ink);
+      font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Noto Sans JP", Meiryo, sans-serif;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.8;
+      letter-spacing: 0;
+      text-align: left;
+    }
+    .gr-topbar p, .gr-hero p, .gr-hero ul, .gr-hero li, .gr-hero h1, .gr-cta h2, .gr-cta p { margin: 0; padding: 0; }
+    .gr-hero ul { list-style: none; }
+    .gr-topbar strong, .gr-hero strong, .gr-cta strong { font-weight: 700; }
+    /* 言葉の途中で折れないようにする。HTML 側では文節の区切りに wbr タグを入れてある */
+    .gr-hero h1, .gr-cta h2, .gr-hero .gr-kw { word-break: keep-all; overflow-wrap: anywhere; }
+    .gr-hero .gr-nowrap, .gr-cta .gr-nowrap { white-space: nowrap; }
+    @media (min-width: 641px) {
+      .gr-hero .gr-br-sp { display: none; }
+    }
+
+    /* 0. 上の帯 */
+    .gr-topbar { background: #d9534f; color: #fff; }
+    .gr-topbar__inner { display: flex; align-items: center; gap: 10px; width: min(81.6%, 1560px); margin-inline: auto; padding: 10px 0; }
+    .gr-topbar small { display: block; font-size: .72rem; font-weight: 700; line-height: 1.4; opacity: .95; }
+    .gr-topbar strong { display: block; font-size: 1.15rem; font-weight: 700; line-height: 1.4; letter-spacing: .02em; }
+    @media (max-width: 900px) {
+      .gr-topbar__inner { width: calc(100% - 32px); }
+    }
+
+    /* 1. 最初の画面 */
+    .gr-hero { position: relative; z-index: 0; overflow: hidden; padding: 28px 0 40px; background: #fff; }
+    .gr-hero__photo { position: absolute; top: 0; right: 0; bottom: 0; z-index: -1; width: 48%; }
+    .gr-hero .gr-hero__photo img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 60% 30%; }
+    .gr-hero__photo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, .78) 20%, rgba(255, 255, 255, 0) 52%);
+    }
+    .gr-hero__inner { position: relative; width: min(81.6%, 1560px); margin-inline: auto; }
+    .gr-hero__text { max-width: min(56%, 640px); line-height: 1.6; }
+    .gr-hero .gr-hero__title { margin: 0 0 12px; color: var(--gr-red); font-size: 16px; font-weight: 900; line-height: 1.25; }
+    .gr-hero .gr-hero__sub { margin: 0 0 10px; color: #111; font-size: clamp(1.32rem, 2.04vw, 1.68rem); font-weight: 700; line-height: 1.5; }
+    .gr-hero .gr-hero__copy { margin: 0; padding-top: 10px; border-top: 1px dashed #999; color: #111; font-size: 1.14rem; font-weight: 700; line-height: 1.6; }
+    .gr-hero .gr-hero__price { margin: 2px 0 0; color: var(--gr-red-dark); font-size: 1.14rem; font-weight: 800; line-height: 1.4; }
+    .gr-hero__yen { font-size: 1.2em; }
+    .gr-hero .gr-hero__area { display: inline-block; margin: 0 0 10px; padding: 4px 12px; border: 1.5px solid var(--gr-red); border-radius: 999px; background: #fff; color: var(--gr-red-dark); font-size: .8rem; font-weight: 700; line-height: 1.5; text-shadow: none; }
+    .gr-hero__lead { display: block; color: #222; font-size: clamp(1.35rem, 2.2vw, 1.7rem); line-height: 1.3; }
+    .gr-hero__brand { display: block; color: var(--gr-red); font-size: clamp(2.3rem, 4.2vw, 3.4rem); line-height: 1.2; letter-spacing: .02em; }
+    .gr-hero .gr-hero__other { margin: 2px 0 0; padding-bottom: 10px; border-bottom: 1px dashed #999; color: #111; font-size: 1.14rem; font-weight: 700; line-height: 1.6; }
+    .gr-hero .gr-promises {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      max-width: min(56vw, 640px);
+      margin: 16px 0 0;
+    }
+    .gr-hero .gr-promises > li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 78px;
+      padding: 10px 8px;
+      border: 1px solid #b3d9f9;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(33, 150, 243, .08);
+      color: var(--gr-blue-dark);
+      font-size: 1.2rem;
+      font-weight: 800;
+      line-height: 1.3;
+      text-align: center;
+    }
+    .gr-hero .gr-hero__points { display: grid; gap: 6px; margin: 18px 0 0; line-height: 1.5; }
+    .gr-hero .gr-hero__points > li { position: relative; padding-left: 26px; color: var(--gr-head); font-size: 1rem; font-weight: 700; }
+    .gr-hero .gr-hero__points > li::before { content: "\2713"; position: absolute; top: .05em; left: 2px; color: var(--gr-red); font-weight: 900; }
+    /* パソコンの幅：最初の画面を1画面に収める。行を詰め、札の3つは文字に合わせた小さな枠にする */
+    @media (min-width: 901px) {
+      .gr-hero .gr-br-nopc { display: none; }
+      .gr-hero { padding: 16px 0 20px; }
+      .gr-hero .gr-hero__title { margin-bottom: 8px; }
+      .gr-hero .gr-hero__sub { margin-bottom: 8px; }
+      .gr-hero .gr-hero__copy { padding-top: 6px; line-height: 1.5; }
+      .gr-hero .gr-hero__price { line-height: 1.3; }
+      .gr-hero .gr-hero__other { padding-bottom: 6px; line-height: 1.5; }
+      .gr-hero .gr-hero__price .gr-hero__yen { margin-left: .3em; }
+      .gr-hero .gr-promises { display: flex; flex-wrap: wrap; gap: 12px; max-width: none; margin-top: 12px; }
+      .gr-hero .gr-promises > li { min-height: 0; padding: 6px 18px; border-radius: 10px; }
+      .gr-hero .gr-hero__points { gap: 2px; margin-top: 10px; line-height: 1.4; }
+    }
+
+    /* 1-2. 申し込みの帯（最初の画面のすぐ下） */
+    .gr-cta { padding: 54px 0; background: var(--gr-band); color: #fff; text-align: center; }
+    .gr-cta__container { width: min(100% - 32px, 780px); margin-inline: auto; }
+    .gr-cta .gr-cta__title { margin: 0 0 24px; color: #fff; font-size: clamp(1.45rem, 4vw, 2.1rem); font-weight: 900; line-height: 1.6; }
+    .gr-cta .gr-cta__title strong { color: var(--gr-cta-red); font-weight: inherit; }
+    .gr-cta .gr-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: auto; max-width: 680px; margin: 0 auto; }
+    .gr-cta .gr-btn {
+      display: inline-flex;
+      flex: 1 1 0;
+      align-items: center;
+      justify-content: center;
+      min-height: 58px;
+      padding: 13px 24px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      text-decoration: none;
+      word-break: keep-all;
+      overflow-wrap: anywhere;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .gr-cta a.gr-btn, .gr-cta a.gr-btn:visited { color: #fff; }
+    .gr-cta .gr-btn:hover { transform: translateY(-2px); }
+    .gr-cta .gr-btn--tel { background: var(--gr-red); box-shadow: 0 4px 14px rgba(229, 57, 53, .35); }
+    .gr-cta .gr-btn--form { background: var(--gr-form); box-shadow: 0 4px 14px rgba(255, 107, 53, .35); }
+
+    /* スマホ・タブレット */
+    @media (max-width: 900px) {
+      .gr-hero { padding: 22px 0 34px; }
+      .gr-hero .gr-hero__title { line-height: 1.3; }
+      .gr-hero .gr-promises { max-width: none; gap: 8px; margin-top: 18px; }
+      .gr-hero__inner { width: calc(100% - 32px); }
+      .gr-hero__text { max-width: none; text-shadow: 0 0 4px #fff, 0 0 8px #fff; }
+      .gr-hero__photo { bottom: auto; width: 54%; height: 392px; }
+      .gr-hero__photo::after {
+        background:
+          linear-gradient(to top, #fff 0%, rgba(255, 255, 255, 0) 20%),
+          linear-gradient(to right, #fff 0%, rgba(255, 255, 255, .62) 26%, rgba(255, 255, 255, 0) 62%);
+      }
+      .gr-hero .gr-hero__copy, .gr-hero .gr-hero__other { font-size: 1.04rem; }
+      .gr-hero .gr-hero__price { font-size: 1.08rem; }
+    }
+    @media (max-width: 640px) {
+      .gr-hero .gr-promises > li { min-height: 70px; font-size: 1.12rem; }
+      .gr-cta .gr-actions { flex-direction: column; }
+      .gr-cta .gr-btn { flex: 0 0 auto; width: 100%; }
+    }
+    /* 地域の札は2字長いので、狭い画面だけ字を少し小さくして1行に収める */
+    @media (max-width: 400px) {
+      .gr-hero .gr-hero__area { padding: 4px 10px; font-size: .75rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gr-cta .gr-btn { transition: none; }
+    }
+
+    /* ===== 2026-11-08 第2版の原稿で足した部品 ===== */
+    /* 青い帯：「作業費10%割引」の赤字（#e53935）は青い帯（#2196f3）の上で 1.35:1 と読みにくかったので、白い地に濃い赤（#c62828・5.6:1）にする。
+       帯の下の添え書きと受付の1行は 2026-11-08 の本人の直しで外した（見出しの下の余白は元の 24px に戻る） */
+    .gr-cta .gr-cta__title strong { display: inline-block; margin-left: .15em; padding: 0 .35em; border-radius: 6px; background: #fff; color: var(--gr-red-dark); line-height: 1.45; }
+    /* 7・13・16 の帯：ボタンの下の小さい1行（白い字・太字。帯の本文の薄い白より読みやすくする） */
+    .hc-cta > .hc-container > .hc-cta__sub { margin: 14px auto 0; color: #fff; font-size: .88rem; font-weight: 700; line-height: 1.6; }
+    /* 料金の例（表の下の枠） */
+    .hc-price-examples { margin-top: 22px; padding: 18px 22px; border: 1px solid var(--hc-line); border-radius: 12px; background: #f7f8fa; }
+    .hc-price-examples dl { display: grid; gap: 12px; margin: 0; }
+    .hc-price-examples dt { color: #222; font-weight: 700; line-height: 1.6; }
+    .hc-price-examples dd { margin: 2px 0 0; padding-left: 1em; line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+    .hc-price-examples__term { white-space: nowrap; }
+    .hc-price-examples__sum { color: var(--hc-orange-dark); font-weight: 800; white-space: nowrap; }
+    .hc-price-examples .hc-price-examples__note { margin: 14px 0 0; font-size: .88rem; line-height: 1.7; }
+    /* 「先にお伝えしていること」の中のページ内リンク（よくある質問の答えと同じく下線を付ける） */
+    .hc-reason-list p a { text-decoration: underline; }
+    @media (max-width: 640px) {
+      .hc-price-examples { padding: 16px; }
+      .hc-price-examples dd { padding-left: .5em; }
+    }
   </style>
 </head>
 <body <?php body_class('hc-lp'); ?>>
 
-<header class="hc-header">
-  <div class="hc-container hc-header__inner">
-    <a class="hc-brand" href="<?php echo esc_url(home_url('/')); ?>" aria-label="ぐるり屋本舗 トップページ">
-      <span class="hc-brand__sub">神奈川の便利屋</span>
-      <span class="hc-brand__main">ぐるり屋本舗</span>
-    </a>
-    <a class="hc-header__tel" href="<?php echo esc_url($gr_contact_url); ?>">✉️ お問い合わせ</a>
+<!-- 0. 上の帯（2026-11-07 最初の画面の作り直し。ロゴ画像は無いので文字だけ） -->
+<header class="gr-topbar">
+  <div class="gr-topbar__inner">
+    <div><small>神奈川県の便利屋</small><strong>ぐるり屋本舗</strong></div>
   </div>
 </header>
 
 <main>
-  <!-- 1. 最初の画面 -->
-  <section class="hc-hero">
-    <div class="hc-hero__bg" aria-hidden="true">
-      <img src="<?php echo esc_url($gr_hero_image); ?>" width="1672" height="941" fetchpriority="high" decoding="async" alt="">
-      <span></span>
+  <!-- 1. 最初の画面（左に文、右に写真） -->
+  <section class="gr-hero">
+    <div class="gr-hero__photo" aria-hidden="true"><img src="<?php echo esc_url($gr_hero_image); ?>" width="1672" height="941" alt="" loading="eager" fetchpriority="high" decoding="async"></div>
+    <div class="gr-hero__inner">
+      <div class="gr-hero__text">
+        <p class="gr-hero__area gr-kw">横浜・川崎・相模原・藤沢・厚木ほか<wbr>神奈川県全域対応</p>
+        <h1 class="gr-hero__title"><span class="gr-hero__lead">神奈川県の<wbr>便利屋</span><span class="gr-hero__brand">ぐるり屋本舗</span></h1>
+        <p class="gr-hero__sub gr-kw">ちょっとした<wbr>困りごとを<br class="gr-br-nopc"><wbr>ひとつから頼みたい方へ</p>
+        <p class="gr-hero__copy gr-kw">金額は<wbr>現地で<wbr>一緒に<wbr>確かめてから決定<br>相談だけ・<wbr>見積りだけでもOK</p>
+        <p class="gr-hero__price gr-kw">作業費（1名・1時間）<br class="gr-br-nopc"><span class="gr-hero__yen gr-nowrap">3,300円（税込）〜</span><br>出張費 <br class="gr-br-nopc"><span class="gr-hero__yen gr-nowrap">2,200円（税込）〜</span></p>
+        <p class="gr-hero__other gr-kw">片付け・<wbr>草刈り・<wbr>家具の移動・<wbr>電球の交換も<wbr>お受けします！</p>
+      </div>
+      <ul class="gr-promises">
+        <li>年中<br class="gr-br-nopc">無休</li>
+        <li>見積り<br class="gr-br-nopc">無料</li>
+        <li>県内<br class="gr-br-nopc">全域</li>
+      </ul>
+      <ul class="gr-hero__points gr-kw">
+        <li>小さな作業は<br class="gr-br-sp"><wbr>空いていれば<wbr>当日も<wbr>伺います</li>
+        <li>見積りだけで<wbr>終わっても<br class="gr-br-sp"><wbr>出張費・<wbr>車両費は<wbr>かかりません</li>
+        <li>現地で<wbr>決めた<wbr>金額は<br class="gr-br-sp"><wbr>追加のご依頼が<wbr>ない限り<wbr>変わりません</li>
+      </ul>
     </div>
-    <div class="hc-container hc-hero__grid">
-      <div>
-        <h1><span class="hc-hero__city">神奈川の</span><span class="hc-hero__service">便利屋</span></h1>
-        <p class="hc-hero__copy">ちょっとした<wbr>雑用から、<wbr>片付け・<wbr>草刈りまで<br>ひとつだけのご依頼でもお伺いします<br><strong class="hc-hero__note">金額は、<wbr>現地で<wbr>一緒に<wbr>確かめてから<wbr>決めます</strong></p>
-      </div>
-      <div class="hc-hero__space" aria-hidden="true"></div>
-      <div class="hc-actions hc-hero__actions">
-        <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
-        <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
-      </div>
-      <p class="hc-hero__hours">受付 9:00〜19:00（年中無休）</p>
-      <div class="hc-container hc-promises__grid" aria-label="ご依頼前のお約束">
-        <div class="hc-promise">
-          <h2>見積もりは<wbr>無料</h2>
-          <p>見積もりだけで終わっても、出張費・車両費はかかりません</p>
-        </div>
-        <div class="hc-promise">
-          <h2>小さな<wbr>依頼も<wbr>OK</h2>
-          <p>電球の交換ひとつからでも伺います</p>
-        </div>
-        <div class="hc-promise">
-          <h2>その<wbr>場で<wbr>決めなくて<wbr>OK</h2>
-          <p>金額を聞いてから後日でも大丈夫です</p>
-        </div>
+  </section>
+
+  <!-- 1-2. 申し込み（最初の画面のすぐ下）。ボタンの入れ物の hc-hero__actions は、前は追従フッターを出す script の目印だった（2026-11-08 から追従フッターは最初から出すので script は無い）。名前はそのまま残す -->
+  <section class="gr-cta">
+    <div class="gr-cta__container">
+      <h2 class="gr-cta__title">初回のご依頼は<wbr><strong class="gr-nowrap">作業費10%割引</strong></h2>
+      <div class="gr-actions hc-hero__actions">
+        <a class="gr-btn gr-btn--tel" href="tel:09021626510">📞 電話を<wbr>かける</a>
+        <a class="gr-btn gr-btn--form" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで<wbr>相談する</a>
       </div>
     </div>
   </section>
@@ -1379,14 +1539,14 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <!-- 2. 悩み -->
   <section class="hc-section">
     <div class="hc-container">
-      <h2 class="hc-title">こんな<strong>お困りごと</strong>、<wbr>ありませんか？</h2>
+      <h2 class="hc-title">こんな<strong>お困りごと</strong><wbr>ありませんか？</h2>
       <div class="hc-concerns-layout">
         <ul class="hc-concern-list">
-          <li><h3>不用品がたまっているけれど、<wbr>どこに<wbr>頼めばいいか<wbr>分からない</h3><p>気になりながら、手をつけられずにいる。</p></li>
-          <li><h3>家具を<wbr>動かしたいけれど、<wbr>一人では<wbr>無理</h3><p>引越しや模様替えで、男手が足りない。</p></li>
+          <li><h3>不用品がたまっているけれど<wbr>どこに<wbr>頼めばいいか<wbr>分からない</h3><p>気になりながら手をつけられずにいる。</p></li>
+          <li><h3>家具を<wbr>動かしたいけれど<wbr>一人では<wbr>無理</h3><p>自分だけではできないし、近くに頼める人がいない。</p></li>
           <li><h3>草が<wbr>伸び<wbr>放題になっている</h3><p>近所に申し訳ない思いをしている。</p></li>
-          <li><h3>頼んだあとに<wbr>追加料金を<wbr>言われそうで<wbr>怖い</h3><p>業者に頼むのは初めてで、なかなか踏み出せない。</p></li>
-          <li><h3>ひとつだけの<wbr>依頼で<wbr>来てもらうのは<wbr>気が<wbr>引ける</h3><p>「これくらいで呼んでいいのかな」と止まってしまう。</p></li>
+          <li><h3>頼んだあとに<wbr>追加料金を<wbr>言われそうで<wbr>怖い</h3><p>業者に頼むのは初めてでなかなか踏み出せない。</p></li>
+          <li><h3>ひとつだけの<wbr>依頼で<wbr>来てもらうのは<wbr>気が<wbr>引ける</h3><p>「これくらいで呼んでいいのかな」と躊躇してしまう。</p></li>
         </ul>
       </div>
     </div>
@@ -1395,11 +1555,11 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <!-- 3. こうお答えします -->
   <section class="hc-section hc-section--tint">
     <div class="hc-container">
-      <h2 class="hc-title">その<strong>お悩み</strong>に、<wbr>こうお答えします</h2>
+      <h2 class="hc-title">その<strong>お悩み</strong>に<wbr>こうお答えします</h2>
       <ol class="hc-reason-list">
-        <li><div><h3>お電話で、<wbr>およその<wbr>金額をお伝えします</h3><p>「何を・どのくらい」を教えていただければ大丈夫です。お伝えするのは仮のお見積もりで、金額は伺ってから決めます。</p></div></li>
-        <li><div><h3>金額は、<wbr>現地で<wbr>一緒に<wbr>確かめてから<wbr>決めます</h3><p>作業の内容を見て、仮のお見積もりから変わるときは理由をご説明します。その場で決めていただかなくても大丈夫です。</p></div></li>
-        <li><div><h3>ひとつだけのご依頼でも<wbr>大丈夫です</h3><p>家具ひとつの移動、電球ひとつの交換でも伺います。「こんなこと頼んでいいの？」というご遠慮は要りません。</p></div></li>
+        <li><div><h3>お電話で<wbr>およその<wbr>金額をお伝えします</h3><p>「何を・どのくらい」を教えていただければ大丈夫です。お伝えするのは仮のお見積りで金額は伺ってから決めます。</p></div></li>
+        <li><div><h3>金額は<wbr>現地で<wbr>一緒に<wbr>確かめてから<wbr>決めます</h3><p>作業の内容を見て仮のお見積りから変わるときは理由をご説明します。もし納得できなければその場で断っていただいても大丈夫です。</p></div></li>
+        <li><div><h3>ひとつだけでも、<wbr>いくつかまとめてでも<wbr>大丈夫です</h3><p>電球ひとつの交換でも伺います。片付けと草刈りのようにいくつかのご依頼を一度に伺うこともできます。「こんなこと頼んでいいの？」というご遠慮は要りません。</p></div></li>
       </ol>
     </div>
   </section>
@@ -1407,11 +1567,13 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <!-- 4. お任せいただくとこうなります -->
   <section class="hc-section">
     <div class="hc-container">
-      <h2 class="hc-title"><strong>お任せ</strong>いただくと、<wbr>こうなります</h2>
+      <h2 class="hc-title"><strong>お任せ</strong>いただくと<wbr>こうなります</h2>
       <ol class="hc-reason-list">
-        <li><div><h3>仕分けや<wbr>準備のことも、<wbr>ご相談ください</h3><p>重い荷物の移動は、そのままお任せください。「何から手をつければ…」という状態でも大丈夫です。</p></div></li>
-        <li><div><h3>小さな<wbr>作業なら、<wbr>当日に<wbr>伺えることもあります</h3><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。金額は現地で決めます。</p></div></li>
-        <li><div><h3>「いくらになるのか」<wbr>と<wbr>心配しなくて<wbr>済みます</h3><p>ご依頼いただくときは、作業の内容と金額、クーリング・オフについてなどを書いた書面をお渡しします。現地で決めた金額は、お客様から追加のご依頼がない限り、あとで変わることはありません。</p></div></li>
+        <li><div><h3>気になっていた<wbr>不用品が<wbr>無くなり<wbr>部屋が<wbr>広くなります</h3><p>「何から手をつければ…」という状態でも大丈夫です。仕分けや準備のこともご相談ください。</p></div></li>
+        <li><div><h3>重たい家具が<wbr>動かせて<wbr>模様替えや<wbr>引越しの<wbr>準備が<wbr>終わります</h3><p>一人では無理だった家具の移動をこちらが行います。お客様が力仕事をする必要はありません。休みの日の時間を潰さずに済みます。</p></div></li>
+        <li><div><h3>庭が<wbr>スッキリして<wbr>ご近所に<wbr>気兼ねしなくて<wbr>済みます</h3><p>伸び放題だった草を刈り見た目を整えます。定期的なご相談も承ります。</p></div></li>
+        <li><div><h3>「いくらになるのか」<wbr>と<wbr>心配しなくて<wbr>済みます</h3><p>ご依頼いただくときは作業の内容と金額をお伝えします。現地で決めた金額はお客様から追加のご依頼がない限りあとで変わることはありません。</p></div></li>
+        <li><div><h3>「頼んでよかった」で<wbr>終わり、<wbr>次からは<wbr>気軽に<wbr>呼べます</h3><p>電球ひとつの交換でも伺います。一度ご一緒したあとは困ったときに「あの人に聞いてみよう」と思い出してもらえる相手でいたいと思っています。</p></div></li>
       </ol>
     </div>
   </section>
@@ -1423,9 +1585,9 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
       <div class="hc-concerns-layout">
         <ul class="hc-concern-list">
           <li><h3>高齢のご両親の<wbr>実家が<wbr>片付かない方</h3></li>
-          <li><h3>共働きや<wbr>子育てで、<wbr>時間が<wbr>取れない方</h3></li>
-          <li><h3>引越しや<wbr>模様替えで、<wbr>家具を<wbr>動かしたい方</h3></li>
-          <li><h3>庭の<wbr>草や<wbr>木の<wbr>手入れが<wbr>追いつかない方</h3></li>
+          <li><h3>共働きや<wbr>子育てで<wbr>時間が<wbr>取れない方</h3></li>
+          <li><h3>一人暮らしや<wbr>高齢で<wbr>力仕事や<wbr>高い所の<wbr>作業が<wbr>難しい方</h3></li>
+          <li><h3>庭や<wbr>空き地や<wbr>空き家の<wbr>手入れが<wbr>追いつかない方</h3></li>
           <li><h3>「こんなこと<wbr>頼んでいいの？」<wbr>と<wbr>思っている方</h3></li>
         </ul>
       </div>
@@ -1439,11 +1601,11 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
       <div class="hc-profile">
         <img class="hc-photo hc-photo--profile" src="<?php echo get_stylesheet_directory_uri(); ?>/images/profile-higuchi.jpg" width="720" height="720" loading="lazy" decoding="async" alt="ぐるり屋本舗の樋口勝己">
         <div>
-          <p class="hc-profile__role">ぐるり屋本舗 代表</p>
+          <p class="hc-profile__role">ぐるり屋本舗</p>
           <h2>樋口 勝己</h2>
-          <p><strong>神奈川でこの仕事を始めたのは、「困っている人の隣に、駆けつけられる存在になりたい」という想いからです。</strong></p>
-          <p>専門の業者さんには頼みにくい「ちょっとした作業」でも、ご依頼いただくたびに、お客様の「良かった」という笑顔が、何より大きなやりがいになっています。</p>
-          <p>屋号の「ぐるり屋本舗」には、「ぐるっと回って、みんなのそばにいる」という気持ちを込めました。</p>
+          <p><strong>神奈川でこの仕事を始めたのは「困っている人の隣に駆けつけられる存在になりたい」という想いからです。</strong></p>
+          <p>専門の業者さんには頼みにくい「ちょっとした作業」のご相談を代表の私がお電話で直接お受けします。現地にも私が伺います。</p>
+          <p>屋号の「ぐるり屋本舗」には「ぐるっと回ってみんなのそばにいる」という気持ちを込めました。</p>
         </div>
       </div>
     </div>
@@ -1451,17 +1613,17 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
 
   <!-- 作業事例：本物の写真がたまったら足す枠（今は出さない） -->
 
-  <!-- お客様の声（実際のお客様。文と札はアンケート用紙のとおり） -->
+  <!-- お客様の声（実際のお客様。文と札はアンケート用紙のとおり。並びは 声3 → 声2 → 声1：2026-11-08 第2版） -->
   <section class="hc-section hc-section--tint" id="voice">
     <div class="hc-container">
       <h2 class="hc-title">実際に<wbr>ご利用<wbr>いただいた<wbr><strong>お客様の声</strong></h2>
       <div class="hc-voices">
         <article class="hc-voice">
-          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice1.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
+          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice3.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
           <div>
-            <p class="hc-voice__tags">📍 相模原市　👤 30代　🔧 ハウスクリーニング</p>
+            <p class="hc-voice__tags">📍 川崎市　👤 50代　🔧 不用品回収・片付け</p>
             <div class="hc-stars" aria-label="星5つ">⭐⭐⭐⭐⭐</div>
-            <blockquote>家の水回り（キッチン、お風呂）をお願いし、キレイにしていただきました。ありがとうございました。</blockquote>
+            <blockquote>断捨離でいらなくなった家電やテーブルなどを回収してもらいました。とても丁寧な対応で安心しておまかせできました。また不用品が出たときはお願いしたいと思います。</blockquote>
           </div>
         </article>
         <article class="hc-voice">
@@ -1473,27 +1635,28 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
           </div>
         </article>
         <article class="hc-voice">
-          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice3.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
+          <img class="hc-voice__img" src="<?php echo get_stylesheet_directory_uri(); ?>/images/voices/voice1.jpg" width="1200" height="1600" loading="lazy" decoding="async" alt="お客様アンケート用紙">
           <div>
-            <p class="hc-voice__tags">📍 川崎市　👤 50代　🔧 不用品回収・片付け</p>
+            <p class="hc-voice__tags">📍 相模原市　👤 30代　🔧 ハウスクリーニング</p>
             <div class="hc-stars" aria-label="星5つ">⭐⭐⭐⭐⭐</div>
-            <blockquote>断捨離でいらなくなった家電やテーブルなどを回収してもらいました。とても丁寧な対応で安心しておまかせできました。また不用品が出たときはお願いしたいと思います。</blockquote>
+            <blockquote>家の水回り（キッチン、お風呂）をお願いし、キレイにしていただきました。ありがとうございました。</blockquote>
           </div>
         </article>
       </div>
-      <p class="hc-note">不用品の回収・処分は、現在は許可を持つ業者に手配してお任せしています。</p>
+      <p class="hc-note">不用品の処分は現在は許可を持つ業者に手配してお任せしています。</p>
     </div>
   </section>
 
   <!-- 7. 問い合わせの帯 -->
   <section class="hc-cta">
     <div class="hc-container">
-      <h2>小さなことから、<wbr>ご相談ください</h2>
-      <p>お見積もりは<wbr>無料です。<wbr>お電話なら、<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
+      <h2>小さなことから<wbr>ご相談ください</h2>
+      <p>お見積りは<wbr>無料です。<wbr>お電話なら<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
       <div class="hc-actions">
         <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
         <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
       </div>
+      <p class="hc-cta__sub">お電話が苦手な方は<wbr>フォームからどうぞ。<wbr>お返事は<wbr>翌営業日までにします。</p>
     </div>
   </section>
 
@@ -1501,34 +1664,34 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <section class="hc-section hc-section--tint" id="service">
     <div class="hc-container">
       <h2 class="hc-title">メニュー</h2>
-      <p class="hc-lead">片付けから<wbr>庭の<wbr>手入れ、<wbr>家具の<wbr>移動まで。<wbr>ここに<wbr>載っていない<wbr>作業も、<wbr>まずはご相談ください。</p>
+      <p class="hc-lead">片付けから<wbr>庭の<wbr>手入れ、<wbr>家具の<wbr>移動まで。<wbr>ここに<wbr>載っていない<wbr>作業も<wbr>まずはご相談ください。</p>
       <div class="hc-service-grid">
         <article class="hc-service hc-service--text"><div class="hc-service__top">
           <h3>片付け・<wbr>不用品</h3>
-          <p>片付けは、現地でお見積もりしてから、別の日に作業します。</p>
+          <p>片付けは現地でお見積りしてから別の日に作業します。</p>
           <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：遺品整理・<wbr>生前整理／<wbr>ゴミ屋敷の<wbr>片付け・<wbr>清掃／<wbr>引越しのときに<wbr>残った<wbr>物の<wbr>片付け／<wbr>空き<wbr>家の<wbr>片付け／<wbr>不用品の<wbr>回収・<wbr>処分のご相談</p>
-          <p class="hc-note">不用品の回収と処分は、許可を持つ業者に手配してお任せします。ぐるり屋本舗がご相談をお受けし、段取りをいたします。</p>
+          <p class="hc-note">不用品の処分は許可を持つ業者に手配してお任せします。ぐるり屋本舗がご相談をお受けし段取りをいたします。</p>
         </div></article>
         <article class="hc-service hc-service--text"><div class="hc-service__top">
           <h3>庭・<wbr>外まわり</h3>
-          <p>草刈りや剪定は、現地で広さや量を見てお見積もりし、別の日に作業します。</p>
-          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：草刈り・<wbr>除草・<wbr>草むしり／<wbr>庭木の<wbr>剪定・<wbr>伐採／<wbr>防草シートの<wbr>施工／<wbr>空き<wbr>地の<wbr>雑草処理</p>
+          <p>草刈りや剪定は現地で広さや量を見てお見積りし別の日に作業します。</p>
+          <p>刈った草の処分も承ります。処分の費用は別にかかります。ご自身で処分されるときは要りません。</p>
+          <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：草刈り・<wbr>除草・<wbr>草むしり／<wbr>庭木の<wbr>剪定・<wbr>伐採／<wbr>防草シートの<wbr>施工／<wbr>空き地や<wbr>空き家の<wbr>雑草処理</p>
         </div></article>
         <article class="hc-service hc-service--text"><div class="hc-service__top">
           <h3>室内・<wbr>清掃</h3>
-          <p>ハウスクリーニングは、専用のページで内容と料金をご案内しています。</p>
           <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：ハウスクリーニング／<wbr>エアコン清掃／<wbr>水回り<wbr>清掃<wbr>（キッチン・<wbr>浴室・<wbr>トイレ）／<wbr>ベランダ掃除</p>
           <p><a class="hc-menu-link" href="<?php echo esc_url(home_url('/housecleaning-sagamihara')); ?>">ハウスクリーニングのページを見る</a></p>
-          <p class="hc-note">専用のページは相模原・町田エリアのご案内です。ほかのエリアは、お電話でご相談ください。</p>
+          <p class="hc-note">専用のページは相模原・町田エリアのご案内です。ほかのエリアはお電話でご相談ください。</p>
         </div></article>
         <article class="hc-service hc-service--text"><div class="hc-service__top">
           <h3>運搬・<wbr>作業</h3>
-          <p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。金額は現地で決めます。</p>
+          <p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は空いていれば当日に伺えます。金額は現地で決めます。</p>
           <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：家具の<wbr>移動・<wbr>組み<wbr>立て・<wbr>解体／<wbr>電球の<wbr>交換／<wbr>小さな<wbr>引越しのお手伝い／<wbr>荷物の<wbr>運搬・<wbr>運び<wbr>出し</p>
         </div></article>
         <article class="hc-service hc-service--text"><div class="hc-service__top">
           <h3>そのほか</h3>
-          <p>お受けできるかどうか、内容を伺ってお答えします。</p>
+          <p>お受けできるかどうか内容を伺ってお答えします。</p>
           <p class="hc-menu-area"><strong>主な<wbr>作業</strong>：買い<wbr>物代行／<wbr>病院の<wbr>付き<wbr>添い／<wbr>話し<wbr>相手・<wbr>見守り／<wbr>シニア向けの<wbr>定期訪問／<wbr>空き<wbr>家の<wbr>見回り・<wbr>ポストの<wbr>確認／<wbr>害虫・<wbr>害獣の<wbr>駆除／<wbr>ちょっとした<wbr>修繕・<wbr>補修／<wbr>各種の<wbr>代行</p>
         </div></article>
       </div>
@@ -1540,11 +1703,12 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     <div class="hc-container">
       <h2 class="hc-title">先にお伝えしていること</h2>
       <ol class="hc-reason-list">
-        <li><div><h3>作業を<wbr>始める<wbr>前に、<wbr>金額を<wbr>決めます</h3><p>仮のお見積もりから変わるときは、理由と一緒に現地でお伝えします。ご依頼のときは、金額やクーリング・オフについてなどを書いた書面をお渡しします。</p></div></li>
-        <li><div><h3>当日できるかどうかは、<wbr>先にお伝えします</h3><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます（金額は現地で決めます）。片付けや草刈りなどは、お見積もりのあと別の日です。</p></div></li>
-        <li><div><h3>その<wbr>日に<wbr>決めていただくことはありません</h3><p>金額を聞いてから、後日のお返事で構いません。無理におすすめはしません。</p></div></li>
-        <li><div><h3>小さなご依頼も、<wbr>まずはお聞きします</h3><p>電球ひとつの交換からご相談ください。お受けできないときは、理由をお伝えします。</p></div></li>
-        <li><div><h3>終わったら、<wbr>一緒に<wbr>確かめていただきます</h3><p>現金でお支払いの場合は、仕上がりを一緒に見ていただいてからお支払いください。</p></div></li>
+        <li><div><h3>作業を<wbr>始める<wbr>前に<wbr>金額を<wbr>決めます</h3><p>仮のお見積りから変わるときは理由と一緒に現地でお伝えします。</p></div></li>
+        <li><div><h3>当日できるかどうかは<wbr>先にお伝えします</h3><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は空いていれば当日に伺えます（金額は現地で決めます）。片付けや草刈りなどはお見積りのあと別の日です。</p></div></li>
+        <li><div><h3>その<wbr>日に<wbr>決めていただくことはありません</h3><p>金額を聞いてから後日のお返事で構いません。無理におすすめはしません。もちろんお断りしていただいても大丈夫です。</p></div></li>
+        <li><div><h3>小さなご依頼も<wbr>まずはお聞きします</h3><p>電球ひとつの交換からご相談ください。お受けできないときは理由をお伝えします。</p></div></li>
+        <li><div><h3>終わったら<wbr>一緒に<wbr>確かめていただきます</h3><p>現金でお支払いの場合は仕上がりを一緒に見ていただいてからお支払いください。</p></div></li>
+        <li><div><h3>ご相談から<wbr>作業まで<wbr>樋口が<wbr>お受けします</h3><p>お電話を受けるのも現地に伺うのも同じ人です。「<a href="#profile">ご相談を受ける人</a>」で顔写真を載せています。</p></div></li>
       </ol>
     </div>
   </section>
@@ -1554,14 +1718,14 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     <div class="hc-narrow">
       <h2 class="hc-title">よくあるご質問</h2>
       <div class="hc-faq">
-        <details><summary>お電話で<wbr>聞いた<wbr>金額から<wbr>変わることはありますか？</summary><div class="hc-faq__answer"><p>お電話でお伝えするのは仮のお見積もりです。現地で作業の内容を確かめて、そこで金額を決めます。荷物の量や作業の内容によっては、仮のお見積もりから変わることがあり、そのときは理由をご説明します。現地で決めた金額は、お客様から追加のご依頼がない限り変わりません。</p></div></details>
-        <details><summary>その<wbr>日のうちに<wbr>来てもらえますか？</summary><div class="hc-faq__answer"><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。金額は現地で決めます。片付け・不用品・草刈りなど、現地を見ないと金額が決まらない作業は、先にお見積もりに伺い、作業は別の日になります。</p></div></details>
-        <details><summary>土日・<wbr>祝日でも<wbr>対応してもらえますか？</summary><div class="hc-faq__answer"><p>年中無休です。お電話の受付は9:00〜19:00です。フォームはいつでも送れます。お返事は翌営業日までにします。</p></div></details>
-        <details><summary>小さな<wbr>依頼でも<wbr>来てもらえますか？</summary><div class="hc-faq__answer"><p>家具ひとつの移動、電球ひとつの交換からでも伺います。小さなご依頼こそ、遠慮なくご相談ください。</p></div></details>
-        <details><summary>ほかの<wbr>業者に<wbr>断られた<wbr>作業でも、<wbr>相談できますか？</summary><div class="hc-faq__answer"><p>ご相談ください。お受けできるかどうか、内容を伺ってお答えします。</p></div></details>
-        <details><summary>初めてで<wbr>不安なのですが…</summary><div class="hc-faq__answer"><p>作業の内容と金額をご説明し、ご納得いただいてから作業を始めます。ご依頼いただくときは、作業の内容と金額、クーリング・オフについてなどを書いた書面をお渡しします。強引な勧誘はしません。</p></div></details>
-        <details><summary>キャンセルはできますか？</summary><div class="hc-faq__answer"><p>作業を始める前のキャンセルは無料です。作業の当日でも、料金はいただきません。クーリング・オフができる場合を除き、作業を始めたあとは、お見積もりで決めた金額のうち、それまでに済んだ作業の分（作業の時間で計算します）をいただきます。当方の都合や落ち度で作業ができなかったときは、お金はいただきません。前払いいただいた分は、クーリング・オフのときと、当方の都合や落ち度のときは、振込手数料も差し引かずに全額お返しします。クーリング・オフについては、ご契約のときにお渡しする書面でご説明します。くわしくは「<a href="#price">料金</a>」と「<a href="<?php echo esc_url(home_url('/tokusho/')); ?>">特定商取引法に基づく表記</a>」をご覧ください。</p></div></details>
-        <details><summary>支払い<wbr>方法を<wbr>教えてください。</summary><div class="hc-faq__answer"><p>現金でお願いしています。作業が終わったあと、その場でお支払いください。遠方などで現金が難しい場合は、銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p></div></details>
+        <details><summary>お電話で<wbr>聞いた<wbr>金額から<wbr>変わることはありますか？</summary><div class="hc-faq__answer"><p>お電話でお伝えするのは仮のお見積りです。現地で作業の内容を確かめてそこで金額を決めます。荷物の量や作業の内容によっては仮のお見積りから変わることがあり、そのときは理由をご説明します。現地で決めた金額はお客様から追加のご依頼がない限り変わりません。</p></div></details>
+        <details><summary>その<wbr>日のうちに<wbr>来てもらえますか？</summary><div class="hc-faq__answer"><p>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は空いていれば当日に伺えます。金額は現地で決めます。片付け・不用品・草刈りなど現地を見ないと金額が決まらない作業は先にお見積りに伺い、作業は別の日になります。</p></div></details>
+        <details><summary>土日・<wbr>祝日や<wbr>夜の<wbr>作業も<wbr>お願いできますか？</summary><div class="hc-faq__answer"><p>はい。年中無休で土日・祝日も料金は平日と同じです。20時から翌朝8時までの作業は作業費が1時間4,400円〜になります。お電話の受付は9:00〜19:00なので夜の作業は前もってご相談ください。フォームは24時間いつでも送れます。</p></div></details>
+        <details><summary>ほかの<wbr>業者と<wbr>比べてから<wbr>決めてもいいですか？</summary><div class="hc-faq__answer"><p>はい。お見積りは無料で見積りだけで終わっても出張費・車両費はいただきません。その場で決めていただく必要はなく比べてからのお返事で構いません。強引な勧誘はしません。作業開始前にご納得いただいてから始めます。</p></div></details>
+        <details><summary>どんな人が<wbr>来ますか？</summary><div class="hc-faq__answer"><p>樋口が伺います。顔写真と自己紹介は「<a href="#profile">ご相談を受ける人</a>」に載せています。</p></div></details>
+        <details><summary>作業のとき<wbr>立ち会いは<wbr>必要ですか？</summary><div class="hc-faq__answer"><p>必ずしも必要ではありません。ご希望があれば鍵などをお預かりして作業することもできます。終わったらご連絡します。</p></div></details>
+        <details><summary>キャンセルはできますか？</summary><div class="hc-faq__answer"><p>作業を始める前のキャンセルは無料です。作業の当日でも料金はいただきません。作業を始めたあとはお見積りで決めた金額のうちそれまでに済んだ作業の分（作業の時間で計算します）をいただきます。当方の都合や落ち度で作業ができなかったときはお金はいただきません。</p></div></details>
+        <details><summary>支払い<wbr>方法を<wbr>教えてください。</summary><div class="hc-faq__answer"><p>現金でお願いしています。作業が終わったあとその場でお支払いください。遠方などで現金が難しい場合は銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担になります。</p></div></details>
       </div>
     </div>
   </section>
@@ -1577,29 +1741,35 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
             <tr><td>作業費</td><td>3,300円〜（税込）/ 1名・1時間</td></tr>
             <tr><td>出張費</td><td>2,200円〜（税込）</td></tr>
             <tr><td>車両費</td><td>3,300円〜（税込）</td></tr>
+            <tr><td>専門作業費</td><td>作業の内容による（資材の費用を含む）</td></tr>
           </tbody>
         </table>
       </div>
       <p class="hc-note">作業の内容・人数・時間によって金額は変わります。</p>
-      <p class="hc-note">出張費は、作業に伺う日ごとにかかります。車両費は、車を使う作業のときだけかかります。作業費は1名・1時間ごとに数えます。1時間に満たないときも、1時間分をいただきます。</p>
-      <div class="hc-offer">
-        <p class="hc-offer__label">初回限定</p>
-        <h3>はじめてご利用のお客様へ</h3>
-        <p>初回のご依頼に限り、作業費から10%割引いたします。「まず試してみたい」という方も安心してご連絡ください。</p>
-        <p class="hc-offer__note">※お電話のときか、現地で金額を決めるときにお申し出ください。他の割引との併用はできません。</p>
+      <p class="hc-note">出張費は作業に伺う日ごとにかかります。車両費は車を使う作業のときだけかかります。作業費は1名・1時間ごとに数えます。1時間に満たないときも1時間分をいただきます。</p>
+      <p class="hc-note">※20:00〜翌8:00の作業は作業費が4,400円〜（税込）/ 1名・1時間になります。前もってご相談ください。</p>
+      <!-- 料金の例（2026-11-08 本人の直し。出張費は人数にかかわらず1回分。見出しの文は原稿に無いので出さない） -->
+      <div class="hc-price-examples" role="group" aria-label="料金の例">
+        <dl>
+          <div><dt>例1　電球の交換（1名・30分）</dt><dd><span class="hc-price-examples__term">作業費 3,300円（1時間分）</span><wbr><span class="hc-price-examples__term">＋出張費 2,200円</span> <span class="hc-price-examples__sum">＝ 5,500円〜</span></dd></div>
+          <div><dt>例2　家具の移動（2名・1時間）</dt><dd><span class="hc-price-examples__term">作業費 3,300円×2名</span> <span class="hc-price-examples__term">＋出張費 2,200円</span> <span class="hc-price-examples__sum">＝ 8,800円〜</span></dd></div>
+          <div><dt>例3　荷物の運搬（1名・2時間・車あり）</dt><dd><span class="hc-price-examples__term">作業費 3,300円×2時間</span> <span class="hc-price-examples__term">＋出張費 2,200円</span> <span class="hc-price-examples__term">＋車両費 3,300円</span> <span class="hc-price-examples__sum">＝ 12,100円〜</span></dd></div>
+          <div><dt>例4　見積りだけで終わったとき</dt><dd><span class="hc-price-examples__term">出張費・車両費はかかりません</span> <span class="hc-price-examples__sum">＝ 0円</span></dd></div>
+        </dl>
+        <p class="hc-price-examples__note">※金額は現地で決めます。初回は作業費から10%割引です。</p>
       </div>
-      <p class="hc-price-attention">表示はすべて<strong>税込</strong>です。<strong>お見積もりは無料です。見積もりだけで終わった場合も、出張費・車両費はかかりません。</strong>お電話でお伝えするのは<strong>仮のお見積もり</strong>です。金額は、<strong>現地で作業の内容を確かめ、ご説明したうえで決めます。決めた金額は、お客様から追加のご依頼がない限り、あとで増えることはありません。</strong></p>
-      <p class="hc-note">対応エリアの外は交通費を、コインパーキングを使うときは駐車場代（実費）を、別にいただきます。どちらもお見積もりのときにご説明します。</p>
-      <p class="hc-note"><strong>お支払いは現金でお願いしています。</strong>作業が終わったあと、その場でお支払いください。領収書をお出しします。遠方などで現金が難しい場合は、銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p>
-      <p class="hc-note"><strong>作業を始める前のキャンセルは無料です。</strong>作業の当日でも、料金はいただきません。クーリング・オフができる場合を除き、作業を始めたあとのキャンセルは、お見積もりで決めた金額のうち、それまでに済んだ作業の分（作業の時間で計算します）をいただきます。日程の変更は前日までにご連絡ください。銀行振込で前払いいただいたあとに、お客様のご都合でキャンセルされた場合は、クーリング・オフの場合を除き、返金のときの振込手数料を差し引いてお返しします（済んだ作業の分をいただくときは、その分も差し引きます）。クーリング・オフのときは、振込手数料も差し引かずに全額お返しします。当方の都合や落ち度で作業ができなかったときは、お金はいただかず、前払いいただいた分は振込手数料も差し引かずに全額お返しします。クーリング・オフについては、ご契約のときにお渡しする書面でご説明します。</p>
+      <p class="hc-price-attention">表示はすべて<strong>税込</strong>です。<strong>お見積りは無料です。見積りだけで終わった場合も出張費・車両費はかかりません。</strong>お電話でお伝えするのは<strong>仮のお見積り</strong>です。金額は<strong>現地で作業の内容を確かめ、ご説明したうえで決めます。決めた金額はお客様から追加のご依頼がない限りあとで増えることはありません。</strong></p>
+      <p class="hc-note">対応エリアの外は交通費を、コインパーキングを使うときは駐車場代（実費）を別にいただきます。どちらもお見積りのときにご説明します。</p>
+      <p class="hc-note">専門の技術や道具、洗剤・資材が要る作業は時間制の作業費とは別に専門作業費がかかります。金額は作業の内容で変わるので現地のお見積りでお伝えし、作業の前に決めます。</p>
+      <p class="hc-note">不用品や刈った草などを処分するときは処分の費用が別にかかります。品物や量によって変わるので現地のお見積りでお伝えし、ほかの料金と合わせてお見積りに入れます。</p>
     </div>
   </section>
 
   <!-- 12. お伺いするエリア -->
   <section class="hc-section hc-section--tint" id="area">
     <div class="hc-container">
-      <h2 class="hc-title">神奈川県全域と、<wbr>東京都の<wbr>一部へお伺いします</h2>
-      <p class="hc-lead">横浜・<wbr>川崎・<wbr>相模原をはじめ、<wbr>神奈川県内の<wbr>全域へ<wbr>伺います。<wbr>東京都の<wbr>町田市・<wbr>多摩市にも<wbr>伺います。</p>
+      <h2 class="hc-title">神奈川県全域と<wbr>東京都の<wbr>一部へお伺いします</h2>
+      <p class="hc-lead">横浜・<wbr>川崎・<wbr>相模原をはじめ<wbr>神奈川県内の<wbr>全域へ<wbr>伺います。<wbr>東京都の<wbr>町田市・<wbr>多摩市にも<wbr>伺います。</p>
       <h3 class="hc-area-group">神奈川県<wbr>（全域）</h3>
       <p class="hc-area-label">横浜市（全18区）</p>
       <ul class="hc-area-list hc-area-list--compact">
@@ -1679,19 +1849,20 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
         <li class="hc-area-chip">町田市</li>
         <li class="hc-area-chip">多摩市</li>
       </ul>
-      <p class="hc-note">上のほかのエリアも、まずはご相談ください。対応エリアの外は、交通費を別にいただきます。</p>
+      <p class="hc-note">上のほかのエリアもまずはご相談ください。対応エリアの外は交通費を別にいただきます。</p>
     </div>
   </section>
 
   <!-- 13. 問い合わせの帯 -->
   <section class="hc-cta">
     <div class="hc-container">
-      <h2>小さなことから、<wbr>ご相談ください</h2>
-      <p>お見積もりは<wbr>無料です。<wbr>お電話なら、<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
+      <h2>小さなことから<wbr>ご相談ください</h2>
+      <p>お見積りは<wbr>無料です。<wbr>お電話なら<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
       <div class="hc-actions">
         <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
         <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
       </div>
+      <p class="hc-cta__sub">お電話が苦手な方は<wbr>フォームからどうぞ。<wbr>お返事は<wbr>翌営業日までにします。</p>
     </div>
   </section>
 
@@ -1699,26 +1870,26 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <section class="hc-section" id="flow">
     <div class="hc-container">
       <h2 class="hc-title">ご依頼の<wbr>流れ</h2>
-      <p class="hc-lead">お問い<wbr>合わせからお支払いまで、<wbr>4つの<wbr>ステップです</p>
+      <p class="hc-lead">お問い<wbr>合わせからお支払いまで<wbr>4つの<wbr>ステップです</p>
       <div class="hc-flow">
-        <article class="hc-flow__item hc-flow__item--text"><div><h3>01　お問い<wbr>合わせ</h3><p>お電話またはフォームからご連絡ください。何を・どのくらい・いつごろ・どこで、を教えてください。<strong>お電話なら、その場でおよその金額（仮のお見積もり）をお伝えします。</strong><br>電話 <a href="tel:09021626510">090-2162-6510</a>（9:00〜19:00・年中無休）／フォームはいつでも送れます。<strong>お返事は翌営業日までにします。</strong></p></div></article>
-        <article class="hc-flow__item hc-flow__item--text"><div><h3>02　現地でお見積もり</h3><p><strong>無料です。見積もりだけで終わっても、出張費・車両費はかかりません。</strong>伺って、作業の内容を一緒に確かめ、金額を決めます。仮のお見積もりから変わるときは、ここで理由をご説明します。<strong>ご依頼いただくときは、作業の内容と金額、クーリング・オフについてなどを書いた書面をお渡しします。その場で決めていただかなくても大丈夫です。</strong>あとからご依頼いただくときは、お電話かフォームでご連絡ください。作業の日は、ご希望をお聞きして一緒に決めます。</p></div></article>
-        <article class="hc-flow__item hc-flow__item--text"><div><h3>03　作業</h3><p><strong>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は、空いていれば当日に伺えます。</strong>金額は現地で決めます。片付け・不用品・草刈りなど、お見積もりが必要な作業は、日を改めて伺います。作業の前に床や壁を養生し、土足では上がりません。</p></div></article>
-        <article class="hc-flow__item hc-flow__item--text"><div><h3>04　お支払い</h3><p><strong>作業が終わったら、仕上がりを一緒に見ていただきます。</strong>ご確認いただいてから、<strong>現金</strong>でその場でお支払いください。領収書をお出しします。遠方などで現金が難しい場合は、銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>01　お問い<wbr>合わせ</h3><p>お電話またはフォームからご連絡ください。何を・どのくらい・いつごろ・どこで、を教えてください。<strong>お電話ならその場でおよその金額（仮のお見積り）をお伝えします。</strong><br>電話 <a href="tel:09021626510">090-2162-6510</a>（9:00〜19:00・年中無休）／フォームはいつでも送れます。<strong>お返事は翌営業日までにします。</strong></p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>02　現地でお見積り</h3><p><strong>無料です。見積りだけで終わっても出張費・車両費はかかりません。</strong>伺って作業の内容を一緒に確かめ、金額を決めます。仮のお見積りから変わるときはここで理由をご説明します。<strong>ご依頼いただくときは作業の内容と金額などを書いた書面をお渡しします。その場で決めていただかなくても大丈夫です。</strong>あとからご依頼いただくときはお電話かフォームでご連絡ください。作業の日はご希望をお聞きして一緒に決めます。</p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>03　作業</h3><p><strong>お電話で作業の中身と金額の見通しが立つ小さな作業（家具の移動・電球の交換など）は空いていれば当日に伺えます。</strong>金額は現地で決めます。片付け・不用品・草刈りなどお見積りが必要な作業は日を改めて伺います。</p></div></article>
+        <article class="hc-flow__item hc-flow__item--text"><div><h3>04　お支払い</h3><p><strong>作業が終わったら仕上がりを一緒に見ていただきます。</strong>ご確認いただいてから<strong>現金</strong>でその場でお支払いください。領収書をお出しします。遠方などで現金が難しい場合は銀行振込にも対応します。お振り込みは作業の前にお願いします。振込手数料はお客様のご負担です。</p></div></article>
       </div>
     </div>
   </section>
 
-  <!-- 15. 最後に -->
+  <!-- 15. 最後に（見出しは「神奈川のお客様へ」） -->
   <section class="hc-section">
     <div class="hc-container">
-      <h2 class="hc-title">最後に</h2>
+      <h2 class="hc-title">神奈川の<wbr>お客様へ</h2>
       <div class="hc-message">
-        <p><strong>「困っているけれど、どこに頼めばいいかわからない」</strong><br>便利屋は、そんな方のそばに寄り添う仕事だと思っています。</p>
-        <p><strong>お電話一本、フォームからの一通で構いません。</strong><br>「これくらいのことで頼んでいいの？」というご遠慮は要りません。</p>
-        <p><strong>金額は、伺って一緒に確かめてから決めます。</strong><br>お願いするかどうかは、金額を聞いてから決めていただいて大丈夫です。</p>
-        <p><strong>困ったときに「あのお店、頼んでよかった」と思っていただける、そんな便利屋でありたいと思っています。</strong><br>誠心誠意お伺いします。</p>
-        <p class="hc-message__sign">ぐるり屋本舗　代表　樋口勝己</p>
+        <p><strong>「困っているけれどどこに頼めばいいかわからない」</strong><br>便利屋はそんな方のそばに寄り添う仕事だと思っています。</p>
+        <p><strong>お電話一本、フォームからの一通で構いません。</strong></p>
+        <p><strong>金額は伺って一緒に確かめてから決めます。</strong><br>お願いするかどうかは金額を聞いてから決めていただいて大丈夫です。</p>
+        <p><strong>困ったときに「あのお店、頼んでよかった」と思っていただける、そんな便利屋でありたいと思っています。</strong></p>
+        <p class="hc-message__sign">ぐるり屋本舗　　樋口勝己</p>
       </div>
     </div>
   </section>
@@ -1726,12 +1897,13 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
   <!-- 16. 問い合わせの帯 -->
   <section class="hc-cta">
     <div class="hc-container">
-      <h2>小さなことから、<wbr>ご相談ください</h2>
-      <p>お見積もりは<wbr>無料です。<wbr>お電話なら、<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
+      <h2>小さなことから<wbr>ご相談ください</h2>
+      <p>お見積りは<wbr>無料です。<wbr>お電話なら<wbr>その<wbr>場でおよその<wbr>金額をお伝えします。</p>
       <div class="hc-actions">
         <a class="hc-button hc-button--primary" href="tel:09021626510">📞 電話で聞いてみる</a>
         <a class="hc-button hc-button--secondary" href="<?php echo esc_url($gr_contact_url); ?>">✉️ フォームで相談する</a>
       </div>
+      <p class="hc-cta__sub">お電話が苦手な方は<wbr>フォームからどうぞ。<wbr>お返事は<wbr>翌営業日までにします。</p>
     </div>
   </section>
 
@@ -1742,7 +1914,7 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     <dl>
       <div><dt>事業者名</dt><dd>つづく制作室合同会社（サイト名：ぐるり屋本舗）</dd></div>
       <div><dt>代表</dt><dd>樋口勝己</dd></div>
-      <div><dt>所在地</dt><dd>請求があった場合、遅滞なく開示いたします</dd></div>
+      <div><dt>所在地</dt><dd>請求があった場合遅滞なく開示いたします</dd></div>
       <div><dt>対応エリア</dt><dd>神奈川県全域／東京都（町田市・多摩市）</dd></div>
       <div><dt>電話</dt><dd><a href="tel:09021626510">090-2162-6510</a></dd></div>
       <div><dt>受付時間</dt><dd>9:00〜19:00（年中無休）</dd></div>
@@ -1763,7 +1935,7 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
       <strong>ぐるり屋本舗</strong>
     </div>
     <div class="hc-sticky__tags" aria-label="受付・対応条件">
-      <span>見積もり無料</span>
+      <span>見積り無料</span>
       <span>年中無休</span>
       <span>作業前に金額を決定</span>
       <span>小さな依頼OK</span>
@@ -1775,20 +1947,6 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
 
 <?php wp_footer(); ?>
 
-<script>
-// 追従フッター：最初の画面のボタンが画面から出たら表示する（器の相模原のページと同じ仕組み）。
-(function () {
-  var bar = document.querySelector('.hc-sticky');
-  var anchor = document.querySelector('.hc-hero__actions') || document.querySelector('.hc-hero');
-  if (!bar || !anchor) return;
-  var SHOW_AT = 100;
-  function update() {
-    bar.classList.toggle('is-visible', anchor.getBoundingClientRect().bottom < SHOW_AT);
-  }
-  window.addEventListener('scroll', update, { passive: true });
-  window.addEventListener('resize', update, { passive: true });
-  update();
-})();
-</script>
+<!-- 追従フッターは最初から出すので、出し入れの script は無い（2026-11-08。前は SHOW_AT で最初の画面のボタンが画面から出たら出していた） -->
 </body>
 </html>
