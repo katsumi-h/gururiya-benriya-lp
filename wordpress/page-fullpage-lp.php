@@ -8,8 +8,6 @@
    お問い合わせは共通の /contact/ へ（?service= は付けない。共通の問い合わせページは触らない）。
    計測は改修前のトップと同じ（wp_head と wp_footer だけ。相模原の dataLayer の行は持ち込まない）。 */
 $gr_contact_url = home_url('/contact/');
-/* 最初の画面の背景。仮の画像。あとで差し替え（差し替えるときは、この1行のファイル名と、下の img の width・height を変える） */
-$gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -1351,13 +1349,48 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
     /* 1. 最初の画面 */
     .gr-hero { position: relative; z-index: 0; overflow: hidden; padding: 28px 0 40px; background: #fff; }
     .gr-hero__photo { position: absolute; top: 0; right: 0; bottom: 0; z-index: -1; width: 48%; }
-    .gr-hero .gr-hero__photo img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 60% 30%; }
-    .gr-hero__photo::after {
-      content: "";
+    /* 右の絵（2026-11-12 写真から場面の絵に差し替え）。薄い背景（空と家並み）の上に場面4枚を2×2で並べ、
+       その左に見出しの方を指す代表キャラを立たせる。前の写真に掛けていた白いぼかし（::after）は使わない */
+    .gr-hero .gr-hero__bg {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to right, #fff 0%, rgba(255, 255, 255, .78) 20%, rgba(255, 255, 255, 0) 52%);
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      object-fit: cover;
+      object-position: center bottom;
+      opacity: .38;
+      /* 左の文字の側は透かし、右へいくほど背景を見せる */
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+      mask-image: linear-gradient(to right, transparent 0%, #000 40%);
     }
+    /* 場面4枚の幅は右の枠の60%。広い画面でも最初の画面の上下で切れないよう 440px で止める */
+    .gr-hero__scenes {
+      position: absolute;
+      top: 50%;
+      right: 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      width: min(60%, 440px);
+      transform: translateY(-50%);
+    }
+    /* 場面1枚ずつの白い縁。少しずつ傾け、右の列は14px下げる */
+    .gr-hero__scene { display: block; overflow: hidden; border: 6px solid #fff; border-radius: 16px; background: #fff; box-shadow: 0 3px 10px rgba(0, 0, 0, .18); }
+    .gr-hero__scene img { width: 100%; height: auto; }
+    .gr-hero__scene--1 { transform: rotate(-2deg); }
+    .gr-hero__scene--2 { transform: rotate(2deg) translateY(14px); }
+    .gr-hero__scene--3 { transform: rotate(1.5deg); }
+    .gr-hero__scene--4 { transform: rotate(-1.5deg) translateY(14px); }
+    /* 指さしの代表キャラ：場面4枚の左の縁に6pxかぶせ、下から3%の所に立たせる（高さは最初の画面の58%） */
+    .gr-hero .gr-hero__point { position: absolute; right: calc(5% + min(60%, 440px) - 6px); bottom: 3%; z-index: 2; width: auto; height: 58%; max-width: none; }
+    /* 幅の狭いパソコン（901〜1150px）ではキャラが左の文字の後ろに入るので出さない（場面4枚と背景は残す） */
+    @media (min-width: 901px) and (max-width: 1150px) {
+      .gr-hero .gr-hero__point { display: none; }
+    }
+    /* スマホ用の絵（見出しの右のキャラ・文の後ろの場面4枚）はパソコンでは出さない。
+       全体の .hc-lp img { display: block; } より強くするため .gr-hero を前に付ける */
+    .gr-hero .gr-hero__point-sp, .gr-hero .gr-hero__scenes-sp { display: none; }
     .gr-hero__inner { position: relative; width: min(81.6%, 1560px); margin-inline: auto; }
     .gr-hero__text { max-width: min(56%, 640px); line-height: 1.6; }
     .gr-hero .gr-hero__title { margin: 0 0 12px; color: var(--gr-red); font-size: 16px; font-weight: 900; line-height: 1.25; }
@@ -1446,14 +1479,25 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
       .gr-hero .gr-promises { max-width: none; gap: 8px; margin-top: 18px; }
       .gr-hero__inner { width: calc(100% - 32px); }
       .gr-hero__text { max-width: none; text-shadow: 0 0 4px #fff, 0 0 8px #fff; }
-      .gr-hero__photo { bottom: auto; width: 54%; height: 392px; }
-      .gr-hero__photo::after {
-        background:
-          linear-gradient(to top, #fff 0%, rgba(255, 255, 255, 0) 20%),
-          linear-gradient(to right, #fff 0%, rgba(255, 255, 255, .62) 26%, rgba(255, 255, 255, 0) 62%);
-      }
       .gr-hero .gr-hero__copy, .gr-hero .gr-hero__other { font-size: 1.04rem; }
       .gr-hero .gr-hero__price { font-size: 1.08rem; }
+      /* 右の絵（パソコン用）は出さない。見出しを一番上にして右に指さしの代表キャラを濃く出し、
+         場面4枚は「ちょっとした困りごとを」の行から下の文字の後ろに薄く敷く（2026-11-12 本人決定の案B） */
+      .gr-hero__photo { display: none; }
+      .gr-hero__text { display: flex; flex-direction: column; align-items: flex-start; }
+      /* 重なりの基準を文と札・チェックを包む .gr-hero__inner にする。場面4枚（z-index: -1）が札3つとチェック3行の後ろに回る */
+      .gr-hero__inner { isolation: isolate; }
+      .gr-hero__text > * { width: 100%; }
+      .gr-hero__text > .gr-hero__area { width: auto; }
+      .gr-hero__text > .gr-hero__title { order: -2; }
+      .gr-hero .gr-hero__title { position: relative; }
+      .gr-hero .gr-hero__point-sp { display: block; position: absolute; top: -8px; right: -2px; width: auto; height: 92px; max-width: none; }
+      /* 場面4枚の入れ物は高さ0。中の4枚を下へはみ出させ、文字の後ろ（z-index: -1）に薄く敷く。
+         幅の広いタブレットでも最初の画面の下で切れないよう、4枚の幅は 380px で止める */
+      .gr-hero .gr-hero__scenes-sp { display: block; position: relative; z-index: -1; height: 0; opacity: .22; pointer-events: none; }
+      .gr-hero__scenes-sp-grid { position: absolute; top: 0; left: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(100%, 380px); }
+      .gr-hero__scenes-sp .gr-hero__scene { border-width: 4px; border-radius: 12px; box-shadow: none; }
+      .gr-hero__scenes-sp .gr-hero__scene--2, .gr-hero__scenes-sp .gr-hero__scene--4 { transform: none; }
     }
     @media (max-width: 640px) {
       .gr-hero .gr-promises > li { min-height: 70px; font-size: 1.12rem; }
@@ -1500,13 +1544,30 @@ $gr_hero_image = get_stylesheet_directory_uri() . '/images/hero_new.png';
 </header>
 
 <main>
-  <!-- 1. 最初の画面（左に文、右に写真） -->
+  <!-- 1. 最初の画面（左に文、右に場面の絵。スマホは見出しの右に指さしのキャラ、文の後ろに場面の絵を薄く） -->
   <section class="gr-hero">
-    <div class="gr-hero__photo" aria-hidden="true"><img src="<?php echo esc_url($gr_hero_image); ?>" width="1672" height="941" alt="" loading="eager" fetchpriority="high" decoding="async"></div>
+    <div class="gr-hero__photo" aria-hidden="true">
+      <img class="gr-hero__bg" src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/bg.webp" width="1600" height="533" alt="" loading="eager" decoding="async">
+      <div class="gr-hero__scenes">
+        <span class="gr-hero__scene gr-hero__scene--1"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene1.webp" width="640" height="640" alt="" loading="eager" fetchpriority="high" decoding="async"></span>
+        <span class="gr-hero__scene gr-hero__scene--2"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene2.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+        <span class="gr-hero__scene gr-hero__scene--3"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene3.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+        <span class="gr-hero__scene gr-hero__scene--4"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene4.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+      </div>
+      <img class="gr-hero__point" src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/point.webp" width="416" height="600" alt="" loading="eager" decoding="async">
+    </div>
     <div class="gr-hero__inner">
       <div class="gr-hero__text">
         <p class="gr-hero__area gr-kw">横浜・川崎・相模原・藤沢・厚木ほか<wbr>神奈川県全域対応</p>
-        <h1 class="gr-hero__title"><span class="gr-hero__lead">神奈川県の<wbr>便利屋</span><span class="gr-hero__brand">ぐるり屋本舗</span></h1>
+        <h1 class="gr-hero__title"><span class="gr-hero__lead">神奈川県の<wbr>便利屋</span><span class="gr-hero__brand">ぐるり屋本舗</span><img class="gr-hero__point-sp" src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/point.webp" width="416" height="600" alt="" aria-hidden="true" loading="eager" decoding="async"></h1>
+        <div class="gr-hero__scenes-sp" aria-hidden="true">
+          <div class="gr-hero__scenes-sp-grid">
+            <span class="gr-hero__scene gr-hero__scene--1"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene1.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+            <span class="gr-hero__scene gr-hero__scene--2"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene2.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+            <span class="gr-hero__scene gr-hero__scene--3"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene3.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+            <span class="gr-hero__scene gr-hero__scene--4"><img src="<?php echo get_stylesheet_directory_uri(); ?>/images/hero/scene4.webp" width="640" height="640" alt="" loading="eager" decoding="async"></span>
+          </div>
+        </div>
         <p class="gr-hero__sub gr-kw">ちょっとした<wbr>困りごとを<br class="gr-br-nopc"><wbr>ひとつから頼みたい方へ</p>
         <p class="gr-hero__copy gr-kw">金額は<wbr>現地で<wbr>一緒に<wbr>確かめてから決定<br>相談だけ・<wbr>見積りだけでもOK</p>
         <p class="gr-hero__price gr-kw">作業費（1名・1時間）<br class="gr-br-nopc"><span class="gr-hero__yen gr-nowrap">3,300円（税込）〜</span><br>出張費 <br class="gr-br-nopc"><span class="gr-hero__yen gr-nowrap">2,200円（税込）〜</span></p>
